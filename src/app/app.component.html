@@ -1,0 +1,12 @@
+@if (isAuthenticated()) {
+  <app-side-nav-inner-toolbar title="{{appInfo.title}}">
+    <router-outlet></router-outlet>
+    <app-footer>
+      Copyright © 2011-{{appInfo.currentYear}} {{appInfo.title}} Inc.
+      <br/>
+      All trademarks or registered trademarks are property of their respective owners.
+    </app-footer>
+  </app-side-nav-inner-toolbar>
+} @else {
+  <app-unauthenticated-content></app-unauthenticated-content>
+}

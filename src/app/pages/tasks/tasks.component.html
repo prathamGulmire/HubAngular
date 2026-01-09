@@ -1,0 +1,211 @@
+<h2>Student/User List</h2>
+
+<dx-data-grid
+  class="dx-card content-block"
+  [dataSource]="dataSource"
+  [showBorders]="false"
+  [focusedRowEnabled]="true"
+  [focusedRowIndex]="0"
+  [columnAutoWidth]="true"
+  [columnHidingEnabled]="true"
+  (onRowDblClick)="openEditPopup($event)">
+
+  <dxo-data-grid-paging [pageSize]="10"></dxo-data-grid-paging>
+  <dxo-data-grid-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-data-grid-pager>
+  <dxo-data-grid-filter-row [visible]="true"></dxo-data-grid-filter-row>
+
+  <dxi-data-grid-column
+    dataField="id"
+    [width]="70"
+    [hidingPriority]="2">
+  </dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="firstName"
+    caption="firstName"
+    [hidingPriority]="8">
+  </dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="lastName"
+    caption="lastName"
+    [hidingPriority]="6">
+  </dxi-data-grid-column>
+
+  <dxi-data-grid-column
+    dataField="email"
+    caption="email"
+    [hidingPriority]="5">
+  </dxi-data-grid-column>
+
+  <dxi-data-grid-column
+    dataField="gender"
+    caption="gender"
+    [allowSorting]="false"
+    [hidingPriority]="7">
+  </dxi-data-grid-column>
+  
+  <dxi-data-grid-column
+    dataField="address"
+    caption="address"
+    [hidingPriority]="4">
+  </dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="country"
+    caption="country"
+    [hidingPriority]="1">
+  </dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="password"
+    caption="password"
+    [hidingPriority]="0">
+  </dxi-data-grid-column>
+
+  <dxi-data-grid-column
+    dataField="createdAt"
+    caption="createdAt"
+    [hidingPriority]="3">
+  </dxi-data-grid-column>
+</dx-data-grid>
+
+
+<dx-popup
+  [(visible)]="isPopupVisible"
+  title="Edit User"
+  [width]="'80%'"
+  [height]="'85%'"
+  [showCloseButton]="true"
+  [dragEnabled]="true"
+  [resizeEnabled]="true">
+
+  <dx-form
+  id="userForm"
+  [formData]="formData"
+  labelLocation="top"
+  [colCountByScreen]="{
+    xs: 1,
+    sm: 2,
+    md: 2,
+    lg: 3
+  }"
+>
+
+  <!-- First Name -->
+  <dxi-item
+    dataField="firstName"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter first name' }">
+  </dxi-item>
+
+  <!-- Middle Name -->
+  <dxi-item
+    dataField="middleName"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter middle name' }">
+  </dxi-item>
+
+  <!-- Last Name -->
+  <dxi-item
+    dataField="lastName"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter last name' }">
+  </dxi-item>
+
+  <!-- Email -->
+  <dxi-item
+    dataField="email"
+    editorType="dxTextBox"
+    [editorOptions]="{
+      mode: 'email',
+      placeholder: 'Enter email'
+    }">
+  </dxi-item>
+
+  <!-- Gender -->
+  <dxi-item
+    dataField="gender"
+    editorType="dxSelectBox"
+    [editorOptions]="{
+      items: genders,
+      placeholder: 'Select gender'
+    }">
+  </dxi-item>
+
+  <!-- Date of Birth -->
+  <dxi-item
+    dataField="dateOfBirth"
+    editorType="dxDateBox"
+    [editorOptions]="{
+      type: 'date',
+      displayFormat: 'dd/MM/yyyy'
+    }">
+  </dxi-item>
+
+  <!-- Address -->
+  <dxi-item
+    dataField="address"
+    editorType="dxTextArea"
+    [editorOptions]="{
+      placeholder: 'Enter address',
+      height: 80
+    }">
+  </dxi-item>
+
+  <!-- Country -->
+  <dxi-item
+    dataField="country"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter country' }">
+  </dxi-item>
+
+  <!-- State -->
+  <dxi-item
+    dataField="state"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter state' }">
+  </dxi-item>
+
+  <!-- Pincode -->
+  <dxi-item
+    dataField="pincode"
+    editorType="dxTextBox"
+    [editorOptions]="{
+      mode: 'number',
+      placeholder: 'Enter pincode'
+    }">
+  </dxi-item>
+
+  <!-- Password -->
+  <dxi-item
+    dataField="password"
+    editorType="dxTextBox"
+    [editorOptions]="{
+      placeholder: 'Enter password'
+    }">
+  </dxi-item>
+
+  <dxi-item itemType="group"
+  [colCount]="2"
+  [colSpan]="1">
+
+    <dxi-item
+      itemType="button"
+      [buttonOptions]="{
+        text: 'Update',
+        type: 'success',
+        width: '100%',
+        onClick: updateUser.bind(this)
+      }">
+    </dxi-item>
+
+    <dxi-item
+      itemType="button"
+      [buttonOptions]="{
+        text: 'Delete',
+        type: 'danger',
+        width: '100%',
+        onClick: deleteUser.bind(this)
+      }">
+    </dxi-item>
+
+    </dxi-item>
+  </dx-form>
+</dx-popup>

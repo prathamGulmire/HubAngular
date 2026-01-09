@@ -1,0 +1,152 @@
+<h2>Home</h2>
+<div class="content-block">
+  <div class="dx-card responsive-paddings">
+    <h5>Welcome to Home Component!</h5>
+  </div>
+</div>
+
+<div class="content-block dx-card responsive-paddings">
+  <dx-form
+  id="userForm"
+  [formData]="formData"
+  labelLocation="top"
+  [colCountByScreen]="{
+    xs: 1,
+    sm: 2,
+    md: 2,
+    lg: 3
+  }"
+>
+
+  <!-- First Name -->
+  <dxi-item
+    dataField="firstName"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter first name' }">
+  </dxi-item>
+
+  <!-- Middle Name -->
+  <dxi-item
+    dataField="middleName"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter middle name' }">
+  </dxi-item>
+
+  <!-- Last Name -->
+  <dxi-item
+    dataField="lastName"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter last name' }">
+  </dxi-item>
+
+  <!-- Email -->
+  <dxi-item
+    dataField="email"
+    editorType="dxTextBox"
+    [editorOptions]="{
+      mode: 'email',
+      placeholder: 'Enter email'
+    }">
+  </dxi-item>
+
+  <!-- Gender -->
+  <dxi-item
+    dataField="gender"
+    editorType="dxSelectBox"
+    [editorOptions]="{
+      items: genders,
+      placeholder: 'Select gender'
+    }">
+  </dxi-item>
+
+  <!-- Date of Birth -->
+  <dxi-item
+    dataField="dateOfBirth"
+    editorType="dxDateBox"
+    [editorOptions]="{
+      type: 'date',
+      displayFormat: 'dd/MM/yyyy'
+    }">
+  </dxi-item>
+
+  <!-- Address -->
+  <dxi-item
+    dataField="address"
+    editorType="dxTextArea"
+    [editorOptions]="{
+      placeholder: 'Enter address',
+      height: 80
+    }">
+  </dxi-item>
+
+  <!-- Country -->
+  <dxi-item
+    dataField="country"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter country' }">
+  </dxi-item>
+
+  <!-- State -->
+  <dxi-item
+    dataField="state"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter state' }">
+  </dxi-item>
+
+  <!-- Pincode -->
+  <dxi-item
+    dataField="pincode"
+    editorType="dxTextBox"
+    [editorOptions]="{
+      mode: 'number',
+      placeholder: 'Enter pincode'
+    }">
+  </dxi-item>
+
+  <!-- Password -->
+  <dxi-item
+    dataField="password"
+    editorType="dxTextBox"
+    [editorOptions]="{
+      placeholder: 'Enter password'
+    }">
+  </dxi-item>
+
+  <!-- Action Buttons Row -->
+  <!-- Action Buttons - Centered in next row -->
+  <dxi-item
+    itemType="group"
+    [colCount]="2"
+    [colSpan]="1"
+    [editorOptions]="{
+      width: 900
+    }"
+    horizontalAlignment="center">
+
+    <!-- Save / Update -->
+    <dxi-item
+      itemType="button"
+      [buttonOptions]="{
+        text: isEditMode ? 'Update' : 'Save',
+        type: 'success',
+        width: 140,
+        onClick: onSubmit.bind(this)
+      }">
+    </dxi-item>
+
+    <!-- Delete -->
+    <dxi-item
+      *ngIf="isEditMode"
+      itemType="button"
+      [buttonOptions]="{
+        text: 'Delete',
+        type: 'danger',
+        width: 140,
+        onClick: deleteUser.bind(this)
+      }">
+    </dxi-item>
+
+  </dxi-item>
+
+</dx-form>
+</div>

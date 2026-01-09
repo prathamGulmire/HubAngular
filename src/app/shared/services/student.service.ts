@@ -8,7 +8,7 @@ import { Environment } from '../../../environment';
 export class StudentService {
 
     // backendUrl = "https://localhost:7262/api/Student";
-    backendUrl = "http://192.168.0.113:5000/api/Student";
+    backendUrl = "http://192.168.31.9:5000/api/Student";
 
     constructor(private http: HttpClient) {
 

@@ -1,36 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DxFormModule } from 'devextreme-angular/ui/form';
+import { AuthService } from '../../shared/services';
+import { StudentService } from '../../shared/services/student.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   templateUrl: 'profile.component.html',
-  styleUrls: [ './profile.component.scss' ],
+  styleUrls: ['./profile.component.scss'],
   standalone: true,
-  imports: [DxFormModule],
+  imports: [DxFormModule, CommonModule],
 })
 
-export class ProfileComponent {
-  employee: any;
-  colCountByScreen: object;
+export class ProfileComponent implements OnInit {
 
-  constructor() {
-    this.employee = {
-      ID: 7,
-      FirstName: 'Sandra',
-      LastName: 'Johnson',
-      Prefix: 'Mrs.',
-      Position: 'Controller',
-      Picture: 'images/employees/06.png',
-      BirthDate: new Date('1974/11/5'),
-      HireDate: new Date('2005/05/11'),
-      /* tslint:disable-next-line:max-line-length */
-      Notes: 'Sandra is a CPA and has been our controller since 2008. She loves to interact with staff so if you`ve not met her, be certain to say hi.\r\n\r\nSandra has 2 daughters both of whom are accomplished gymnasts.',
-      Address: '4600 N Virginia Rd.'
-    };
+  student: any;
+  colCountByScreen: object;
+  imageBaseUrl = 'https://localhost:7262/uploads/';
+
+  constructor(private auth: AuthService, private studentService: StudentService) {
+
     this.colCountByScreen = {
       xs: 1,
       sm: 2,
-      md: 3,
-      lg: 4
+      md: 2,
+      lg: 3
     };
+  }
+
+  ngOnInit(): void {
+    const res = this.auth.getUser();
+
+    if (res?.studentId && res.studentId > 0) {
+      this.studentService.getStudent(res?.studentId).subscribe((response) => {
+        this.student = response[0];
+        console.log(this.student);
+
+        if(this.student.isActive == true) {
+          this.student.isActive = "Yes";
+        } else {
+          this.student.isActive = "No";
+        }
+
+        this.student.dateOfBirth = this.student.dateOfBirth.substring(0, 10);
+        this.student.updatedAt =  this.student.updatedAt.substring(0, 10) + ' ' + this.student.updatedAt.substring(11, 16);
+      });
+    }
+  }
+
+  get imageUrl() {
+    return this.student?.imageUrl
+      ? this.imageBaseUrl + this.student.imageUrl
+      : '';
   }
 }

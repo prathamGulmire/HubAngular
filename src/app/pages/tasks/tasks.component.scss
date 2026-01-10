@@ -1,3 +1,21 @@
 ::ng-deep .dx-datagrid-filter-row {
   background-color: transparent;
 }
+
+/* Header background color */
+:host ::ng-deep .dx-popup .dx-popup-title {
+  background-color: #4caf50; /* green header */
+  color: white;              /* text color */
+  font-weight: 600;
+  padding: 12px 20px;
+}
+
+/* Optional: adjust the close button color */
+:host ::ng-deep .dx-popup .dx-popup-title .dx-popup-close-button {
+  color: white;
+}
+
+
+::ng-deep .delete {
+  margin-top: 15px;
+}

@@ -16,3 +16,28 @@
     margin: 0 auto;
   }
 }
+
+:host ::ng-deep .status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-block;
+
+  &.active {
+    background-color: #e6f4ea;
+    color: #2e7d32; // green
+  }
+
+  &.inactive {
+    background-color: #fdecea;
+    color: #c62828; // red
+  }
+}
+
+
+
+/* Optional: align badge nicely inside dx-form */
+:host ::ng-deep .dx-field-value {
+  display: flex;
+  align-items: center;
+}

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { DxFormModule } from 'devextreme-angular';
+import { DxFileUploaderModule, DxFormModule } from 'devextreme-angular';
 import {
   DxTextBoxModule,
   DxTextAreaModule,
@@ -11,6 +11,8 @@ import {
 import { StudentService } from '../../shared/services/student.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { count } from 'rxjs';
+import { __values } from 'tslib';
+import { AuthService } from '../../shared/services';
 
 @Component({
   templateUrl: 'home.component.html',
@@ -23,10 +25,12 @@ import { count } from 'rxjs';
     DxTextAreaModule,
     DxSelectBoxModule,
     DxDateBoxModule,
-    DxButtonModule
+    DxButtonModule,
+    DxFileUploaderModule
   ],
   providers: [
-    StudentService
+    StudentService,
+    AuthService
   ]
 })
 
@@ -36,13 +40,14 @@ export class HomeComponent implements OnInit {
   isEditMode = false;
   sid!: any;
   genders = ['Male', 'Female', 'Other'];
+  selectedImage: File | null = null;
 
-  constructor(private studentService: StudentService, private router: Router, private route: ActivatedRoute) {
+  constructor(private studentService: StudentService, private router: Router, private route: ActivatedRoute, private authService: AuthService) {
     this.colCountByScreen = {
       xs: 1,
       sm: 2,
-      md: 3,
-      lg: 4
+      md: 2,
+      lg: 3
     };
   }
 
@@ -68,18 +73,43 @@ export class HomeComponent implements OnInit {
     country: 'India',
     state: 'Maharashtra',
     pincode: '413307',
-    password: 'Sham@123'
+    password: 'Sham@123',
+    imageUrl: ""
   };
+
+  onImageSelected(e: any) {
+    this.selectedImage = e.value?.[0] || null;
+  }
 
   loadUser(id: string) {
     this.studentService.getStudent(id).subscribe((res) => {
-      if(res[0] == null || res.length == 0) {
+      if (res[0] == null || res.length == 0) {
         alert("Data with specified id not found!");
         this.router.navigate(["/home"]);
         return;
       }
       this.formData = res[0];
     });
+  }
+
+  private buildFormData(): FormData {
+    const fd = new FormData();
+
+    Object.keys(this.formData).forEach(key => {
+      const value = (this.formData as any)[key];
+
+      if (value !== null && value !== undefined) {
+        fd.append(key, value);
+      }
+    });
+
+    if (this.selectedImage) {
+      fd.append('imageFile', this.selectedImage);
+    }
+
+    console.log(fd);
+
+    return fd;
   }
 
   onSubmit() {
@@ -91,7 +121,10 @@ export class HomeComponent implements OnInit {
   }
 
   addUser() {
-    this.studentService.addStudent(this.formData).subscribe((res) => {
+
+    const fd = this.buildFormData();
+
+    this.studentService.addStudent(fd).subscribe((res) => {
       console.log(res);
       alert("Student record added successfully!");
       this.router.navigate(["/students"]);
@@ -99,7 +132,10 @@ export class HomeComponent implements OnInit {
   }
 
   updateUser() {
-    this.studentService.updateStudent(this.formData).subscribe((res) => {
+
+    const fd = this.buildFormData();
+
+    this.studentService.updateStudent(fd).subscribe((res) => {
       console.log(res);
       alert(res.message);
       this.router.navigate(["/students"]);

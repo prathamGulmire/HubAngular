@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { DxDataGridModule } from 'devextreme-angular/ui/data-grid';
 import { StudentService } from '../../shared/services/student.service';
 import { Router } from '@angular/router';
-import { DxFormModule, DxPopupModule } from 'devextreme-angular';
+import { DxFileUploaderModule, DxFormModule, DxPopupModule } from 'devextreme-angular';
 // import AspNetData from 'devextreme-aspnet-data';
 
 @Component({
   templateUrl: 'tasks.component.html',
   styleUrls: ['tasks.component.scss'],
   standalone: true,
-  imports: [DxDataGridModule, DxPopupModule, DxFormModule],
+  imports: [DxDataGridModule, DxPopupModule, DxFormModule, DxFileUploaderModule],
   providers: [
     StudentService
   ]
@@ -20,6 +20,7 @@ export class TasksComponent implements OnInit {
   isPopupVisible = false;
   formData: any = {};
   genders = ['Male', 'Female', 'Other'];
+  selectedImage: File | null = null;
 
   constructor(private stud: StudentService, private router: Router) {
 
@@ -39,6 +40,10 @@ export class TasksComponent implements OnInit {
     this.isPopupVisible = true;
   }
 
+  onImageSelected(e: any) {
+    this.selectedImage = e.value?.[0] || null;
+  }
+
   getStudents() {
     this.stud.getStudent(0).subscribe((res) => {
       this.dataSource = res;
@@ -46,7 +51,20 @@ export class TasksComponent implements OnInit {
   }
 
   updateUser() {
-    this.stud.updateStudent(this.formData).subscribe((res) => {
+
+    const fd = new FormData();
+
+    Object.keys(this.formData).forEach(key => {
+      if (this.formData[key] !== null && this.formData[key] !== undefined) {
+        fd.append(key, this.formData[key]);
+      }
+    });
+
+    if (this.selectedImage) {
+      fd.append('imageFile', this.selectedImage);
+    }
+
+    this.stud.updateStudent(fd).subscribe((res) => {
       console.log(res);
       alert(res.message);
       this.isPopupVisible = false;

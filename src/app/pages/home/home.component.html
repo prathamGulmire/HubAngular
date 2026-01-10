@@ -1,7 +1,7 @@
 <h2>Home</h2>
 <div class="content-block">
   <div class="dx-card responsive-paddings">
-    <h5>Welcome to Home Component!</h5>
+    <h4>Fill the details to add student record respectively!</h4>
   </div>
 </div>
 
@@ -18,28 +18,24 @@
   }"
 >
 
-  <!-- First Name -->
   <dxi-item
     dataField="firstName"
     editorType="dxTextBox"
     [editorOptions]="{ placeholder: 'Enter first name' }">
   </dxi-item>
 
-  <!-- Middle Name -->
   <dxi-item
     dataField="middleName"
     editorType="dxTextBox"
     [editorOptions]="{ placeholder: 'Enter middle name' }">
   </dxi-item>
 
-  <!-- Last Name -->
   <dxi-item
     dataField="lastName"
     editorType="dxTextBox"
     [editorOptions]="{ placeholder: 'Enter last name' }">
   </dxi-item>
 
-  <!-- Email -->
   <dxi-item
     dataField="email"
     editorType="dxTextBox"
@@ -49,7 +45,6 @@
     }">
   </dxi-item>
 
-  <!-- Gender -->
   <dxi-item
     dataField="gender"
     editorType="dxSelectBox"
@@ -59,7 +54,6 @@
     }">
   </dxi-item>
 
-  <!-- Date of Birth -->
   <dxi-item
     dataField="dateOfBirth"
     editorType="dxDateBox"
@@ -69,7 +63,6 @@
     }">
   </dxi-item>
 
-  <!-- Address -->
   <dxi-item
     dataField="address"
     editorType="dxTextArea"
@@ -79,21 +72,18 @@
     }">
   </dxi-item>
 
-  <!-- Country -->
   <dxi-item
     dataField="country"
     editorType="dxTextBox"
     [editorOptions]="{ placeholder: 'Enter country' }">
   </dxi-item>
 
-  <!-- State -->
   <dxi-item
     dataField="state"
     editorType="dxTextBox"
     [editorOptions]="{ placeholder: 'Enter state' }">
   </dxi-item>
 
-  <!-- Pincode -->
   <dxi-item
     dataField="pincode"
     editorType="dxTextBox"
@@ -103,7 +93,6 @@
     }">
   </dxi-item>
 
-  <!-- Password -->
   <dxi-item
     dataField="password"
     editorType="dxTextBox"
@@ -112,18 +101,29 @@
     }">
   </dxi-item>
 
-  <!-- Action Buttons Row -->
-  <!-- Action Buttons - Centered in next row -->
+  <dxi-item
+    itemType="simple"
+    colSpan="3"
+    label="{ text: 'Profile Image' }">
+
+    <dx-file-uploader
+      accept="image/*"
+      [multiple]="false"
+      uploadMode="useForm"
+      (onValueChanged)="onImageSelected($event)">
+    </dx-file-uploader>
+
+  </dxi-item>
+
   <dxi-item
     itemType="group"
-    [colCount]="2"
+    [colCount]="3"
     [colSpan]="1"
     [editorOptions]="{
       width: 900
     }"
     horizontalAlignment="center">
 
-    <!-- Save / Update -->
     <dxi-item
       itemType="button"
       [buttonOptions]="{
@@ -134,7 +134,6 @@
       }">
     </dxi-item>
 
-    <!-- Delete -->
     <dxi-item
       *ngIf="isEditMode"
       itemType="button"

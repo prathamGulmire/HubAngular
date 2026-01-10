@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { DxDataGridModule } from 'devextreme-angular/ui/data-grid';
 import { StudentService } from '../../shared/services/student.service';
 import { Router } from '@angular/router';
-import { DxFileUploaderModule, DxFormModule, DxPopupModule } from 'devextreme-angular';
+import { DxButtonModule, DxFileUploaderModule, DxFormModule, DxPopupModule } from 'devextreme-angular';
 // import AspNetData from 'devextreme-aspnet-data';
 
 @Component({
   templateUrl: 'tasks.component.html',
   styleUrls: ['tasks.component.scss'],
   standalone: true,
-  imports: [DxDataGridModule, DxPopupModule, DxFormModule, DxFileUploaderModule],
+  imports: [DxDataGridModule, DxPopupModule, DxFormModule, DxFileUploaderModule, DxButtonModule,],
   providers: [
     StudentService
   ]

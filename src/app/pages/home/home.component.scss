@@ -10,7 +10,7 @@
   width: 255px;
   height: 60px;
 
-  > path {
+  >path {
     fill: var(--devextreme-logo-color);
   }
 
@@ -32,6 +32,17 @@
   height: 22px;
 
   path {
-    fill:  var(--plus-icon-color);
+    fill: var(--plus-icon-color);
   }
+}
+
+.form-actions {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+:host ::ng-deep .delete-btn .dx-button {
+  font-weight: 600;
 }

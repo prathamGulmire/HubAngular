@@ -64,12 +64,35 @@
   </dxi-item>
 
   <dxi-item
+    dataField="password"
+    editorType="dxTextBox"
+    [editorOptions]="{
+      placeholder: 'Enter password'
+    }">
+  </dxi-item>
+
+  <dxi-item
     dataField="address"
     editorType="dxTextArea"
     [editorOptions]="{
       placeholder: 'Enter address',
       height: 80
     }">
+  </dxi-item>
+
+  <dxi-item
+    caption="Profile Image"
+    itemType="simple"
+    colSpan="3"
+    label="{ text: 'Profile Image' }">
+
+    <dx-file-uploader
+      accept="image/*"
+      [multiple]="false"
+      uploadMode="useForm"
+      (onValueChanged)="onImageSelected($event)">
+    </dx-file-uploader>
+
   </dxi-item>
 
   <dxi-item
@@ -93,59 +116,25 @@
     }">
   </dxi-item>
 
-  <dxi-item
-    dataField="password"
-    editorType="dxTextBox"
-    [editorOptions]="{
-      placeholder: 'Enter password'
-    }">
-  </dxi-item>
-
-  <dxi-item
-    itemType="simple"
-    colSpan="3"
-    label="{ text: 'Profile Image' }">
-
-    <dx-file-uploader
-      accept="image/*"
-      [multiple]="false"
-      uploadMode="useForm"
-      (onValueChanged)="onImageSelected($event)">
-    </dx-file-uploader>
-
-  </dxi-item>
-
-  <dxi-item
-    itemType="group"
-    [colCount]="3"
-    [colSpan]="1"
-    [editorOptions]="{
-      width: 900
-    }"
-    horizontalAlignment="center">
-
-    <dxi-item
-      itemType="button"
-      [buttonOptions]="{
-        text: isEditMode ? 'Update' : 'Save',
-        type: 'success',
-        width: 140,
-        onClick: onSubmit.bind(this)
-      }">
-    </dxi-item>
-
-    <dxi-item
-      *ngIf="isEditMode"
-      itemType="button"
-      [buttonOptions]="{
-        text: 'Delete',
-        type: 'danger',
-        width: 140,
-        onClick: deleteUser.bind(this)
-      }">
-    </dxi-item>
-
-  </dxi-item>
-
 </dx-form>
+
+  <div class="form-actions">
+
+    <dx-button
+      text="{{ isEditMode ? 'Update' : 'Save' }}"
+      type="success"
+      width="120"
+      (onClick)="onSubmit()">
+    </dx-button>
+
+    <dx-button
+      *ngIf="isEditMode"
+      text="Delete"
+      type="danger"
+      width="120"
+      (onClick)="deleteUser()"
+      class="delete-btn">
+    </dx-button>
+
+  </div>
 </div>

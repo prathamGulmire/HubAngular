@@ -4,8 +4,10 @@
 
 /* Header background color */
 :host ::ng-deep .dx-popup .dx-popup-title {
-  background-color: #4caf50; /* green header */
-  color: white;              /* text color */
+  background-color: #4caf50;
+  /* green header */
+  color: white;
+  /* text color */
   font-weight: 600;
   padding: 12px 20px;
 }
@@ -18,4 +20,15 @@
 
 ::ng-deep .delete {
   margin-top: 15px;
+}
+
+.form-actions {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+:host ::ng-deep .delete-btn .dx-button {
+  font-weight: 600;
 }

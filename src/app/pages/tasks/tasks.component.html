@@ -185,7 +185,7 @@
   </dxi-item>
 
 
-  <dxi-item itemType="group"
+  <!-- <dxi-item itemType="group"
   [colCount]="3"
   [colSpan]="1">
 
@@ -210,6 +210,26 @@
       }">
     </dxi-item>
 
-    </dxi-item>
+  </dxi-item> -->
+
   </dx-form>
+
+  <div class="form-actions">
+
+    <dx-button
+      text="Update"
+      type="success"
+      width="120"
+      (onClick)="updateUser()">
+    </dx-button>
+
+    <dx-button
+      text="Delete"
+      type="danger"
+      width="120"
+      (onClick)="deleteUser()"
+      class="delete-btn">
+    </dx-button>
+
+  </div>
 </dx-popup>

@@ -4,6 +4,8 @@ import { AuthGuardService } from './shared/services';
 import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
+import { AddCourseComponent } from './pages/course-pages/add-course/add-course.component';
+import { CourseListComponent } from './pages/course-pages/course-list/course-list.component';
 
 export const routes: Routes = [
   {
@@ -45,6 +47,16 @@ export const routes: Routes = [
     path: 'change-password/:recoveryCode',
     component: ChangePasswordFormComponent,
     // canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'addCourse',
+    component: AddCourseComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: "courses",
+    component: CourseListComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: '**',

@@ -16,6 +16,8 @@ export class ProfileComponent implements OnInit {
   student: any;
   colCountByScreen: object;
   imageBaseUrl = 'https://localhost:7262/uploads/';
+  // imageBaseUrl = 'http://172.20.10.3:5000/uploads/';    // mobile hotspot
+  // imageBaseUrl = 'http://192.168.31.9:5000/uploads/';
 
   constructor(private auth: AuthService, private studentService: StudentService) {
 

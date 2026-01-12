@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { count } from 'rxjs';
 import { __values } from 'tslib';
 import { AuthService } from '../../shared/services';
+import Swal from 'sweetalert2';
 
 @Component({
   templateUrl: 'home.component.html',
@@ -96,9 +97,15 @@ export class HomeComponent implements OnInit {
     const fd = new FormData();
 
     Object.keys(this.formData).forEach(key => {
-      const value = (this.formData as any)[key];
+      let value = (this.formData as any)[key];
 
       if (value !== null && value !== undefined) {
+
+        if (key === 'dateOfBirth') {
+          const dob = new Date(value);
+          value = dob.toISOString().substring(0, 10);
+        }
+
         fd.append(key, value);
       }
     });
@@ -126,8 +133,15 @@ export class HomeComponent implements OnInit {
 
     this.studentService.addStudent(fd).subscribe((res) => {
       console.log(res);
-      alert("Student record added successfully!");
-      this.router.navigate(["/students"]);
+      Swal.fire({
+        icon: 'success',
+        title: 'Student Added!',
+        text: 'Student record added successfully!',
+        timer: 2000,
+        showConfirmButton: false
+      }).then(() => {
+        this.router.navigate(['/students']);
+      });
     });
   }
 
@@ -137,9 +151,16 @@ export class HomeComponent implements OnInit {
 
     this.studentService.updateStudent(fd).subscribe((res) => {
       console.log(res);
-      alert(res.message);
-      this.router.navigate(["/students"]);
-    })
+      Swal.fire({
+        icon: 'success',
+        title: 'Student Updated!',
+        text: 'Student record updated successfully!',
+        timer: 2000,
+        showConfirmButton: false
+      }).then(() => {
+        this.router.navigate(['/students']);
+      });
+    });
   }
 
   deleteUser() {

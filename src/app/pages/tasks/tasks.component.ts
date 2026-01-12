@@ -4,6 +4,7 @@ import { StudentService } from '../../shared/services/student.service';
 import { Router } from '@angular/router';
 import { DxButtonModule, DxFileUploaderModule, DxFormModule, DxPopupModule } from 'devextreme-angular';
 // import AspNetData from 'devextreme-aspnet-data';
+import Swal from 'sweetalert2';
 
 @Component({
   templateUrl: 'tasks.component.html',
@@ -66,7 +67,15 @@ export class TasksComponent implements OnInit {
 
     this.stud.updateStudent(fd).subscribe((res) => {
       console.log(res);
-      alert(res.message);
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: res.message || 'Student updated successfully!',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true
+      });
       this.isPopupVisible = false;
       this.getStudents();
       this.router.navigate(["/students"]);
@@ -74,12 +83,41 @@ export class TasksComponent implements OnInit {
   }
 
   deleteUser() {
-    if (!confirm('Are you sure you want to delete?')) return;
+    this.isPopupVisible = false;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This record will be permanently deleted!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#d33',
+      backdrop: true,
+      customClass: {
+        popup: 'swal-high-zindex'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.stud.deleteStudent(this.formData.id).subscribe({
+          next: (res) => {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: 'Student record deleted successfully!',
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+              customClass: {
+                popup: 'swal-high-zindex'
+              }
+            });
 
-    this.stud.deleteStudent(this.formData.id).subscribe((res) => {
-      console.log(res);
-      alert(res.message);
-      this.router.navigate(["/students"]);
+            this.getStudents();
+            this.router.navigate(['/students']);
+          }
+        });
+      }
     });
   }
 }

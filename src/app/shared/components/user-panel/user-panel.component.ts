@@ -28,6 +28,8 @@ export class UserPanelComponent implements OnInit {
 
   student: any;
   imageBaseUrl = "https://localhost:7262/uploads/";
+  // imageBaseUrl = "http://172.20.10.3:5000/uploads/";     // mobile hotspot
+  // imageBaseUrl = "http://192.168.31.9:5000/uploads/";      // home wifi
 
   constructor(private auth: AuthService, private stud: StudentService) { }
 

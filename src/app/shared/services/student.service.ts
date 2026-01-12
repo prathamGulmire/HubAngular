@@ -9,7 +9,8 @@ export class StudentService {
 
     backendUrl = "https://localhost:7262/api/Student";
     //backendUrl = "http://192.168.0.113:5000/api/Student";   // office ethernet
-    // backendUrl = "http://192.168.31.9:5000/api/Student"; //home wifi
+    // backendUrl = "http://192.168.31.9:5000/api/Student";      // home wifi
+    // backendUrl = "http://172.20.10.3:5000/api/Student";       // mobile hotspot
 
     constructor(private http: HttpClient) {
 

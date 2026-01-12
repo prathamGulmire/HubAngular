@@ -7,6 +7,7 @@ import { DxToolbarModule } from 'devextreme-angular/ui/toolbar';
 import { AuthService, IUser } from '../../services';
 import { UserPanelComponent } from '../user-panel/user-panel.component';
 import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-header',
@@ -48,9 +49,33 @@ export class HeaderComponent implements OnInit {
     text: 'Logout',
     icon: 'runner',
     onClick: () => {
-      if(confirm("You really want to logout, huh?")) {
-        this.authService.logOut();
-      }
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You really want to logout, huh?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, logout',
+        cancelButtonText: 'Cancel',
+        customClass: {
+          popup: 'swal-high-zindex'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.authService.logOut();
+
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Logged out successfully',
+            showConfirmButton: false,
+            timer: 1500,
+            customClass: {
+              popup: 'swal-high-zindex'
+            }
+          });
+        }
+      });
     }
   }];
 

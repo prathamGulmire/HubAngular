@@ -26,6 +26,7 @@
     "devextreme-aspnet-data": "^5.1.0",
     "devextreme-schematics": "^1.13.0",
     "rxjs": "~7.8.0",
+    "sweetalert2": "^11.26.17",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
   },

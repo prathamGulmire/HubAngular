@@ -33,3 +33,11 @@
 :host ::ng-deep .delete-btn .dx-button {
   font-weight: 600;
 }
+
+.swal-high-zindex {
+  z-index: 99999 !important;
+}
+
+.swal2-container {
+  z-index: 99998 !important;
+}

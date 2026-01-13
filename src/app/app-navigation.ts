@@ -32,5 +32,15 @@ export const navigation: NavigationItem[] = [
         path: '/courses'
       }
     ]
+  },
+  {
+    text: 'ManageStudentCourse',
+    icon: 'folder',
+    items: [
+      {
+        text: 'Assign-Course',
+        path: '/assignCourse'
+      }
+    ]
   }
 ];

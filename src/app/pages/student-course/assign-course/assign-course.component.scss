@@ -1,0 +1,19 @@
+.student-select-box {
+    margin-bottom: 20px;
+}
+
+.courseTable {
+    margin-bottom: 20px;
+}
+
+.assignButton {
+    // background-color: aqua;
+    display: flex;
+    justify-content: center;
+}
+
+.dx-row-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    background-color: #f5f5f5;
+}

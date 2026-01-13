@@ -32,10 +32,6 @@ export class TasksComponent implements OnInit {
     this.getStudents();
   }
 
-  onRowDblClick(e: any) {
-    this.router.navigate(['/home', e.data.id]);
-  }
-
   openEditPopup(e: any) {
     this.formData = { ...e.data }; // clone row data
     this.isPopupVisible = true;
@@ -48,7 +44,7 @@ export class TasksComponent implements OnInit {
   getStudents() {
     this.stud.getStudent(0).subscribe((res) => {
       this.dataSource = res;
-    })
+    });
   }
 
   updateUser() {
@@ -79,7 +75,7 @@ export class TasksComponent implements OnInit {
       this.isPopupVisible = false;
       this.getStudents();
       this.router.navigate(["/students"]);
-    })
+    });
   }
 
   deleteUser() {
@@ -119,5 +115,9 @@ export class TasksComponent implements OnInit {
         });
       }
     });
+  }
+
+  onCancel() {
+    this.isPopupVisible = false;
   }
 }

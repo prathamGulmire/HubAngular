@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EnvironmentCls } from '../../../environment';
 
-
 @Injectable({
     providedIn: 'root'
 })
@@ -14,7 +13,7 @@ export class CourseService {
     constructor(private http: HttpClient) { }
 
     getCourses(id: any) {
-        return this.http.get(this.backendUrl + "/GetCourse/" + id);
+        return this.http.get<any[]>(this.backendUrl + "/GetCourse/" + id);
     }
 
     addCourse(data: any) {
@@ -22,7 +21,7 @@ export class CourseService {
     }
 
     updateCourse(data: any) {
-        return this.http.put(this.backendUrl + "/UpdateCourse", data);
+        return this.http.put<any>(this.backendUrl + "/UpdateCourse", data);
     }
 
     deleteCourse(id: any) {

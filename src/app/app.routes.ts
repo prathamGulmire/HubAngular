@@ -6,6 +6,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { AddCourseComponent } from './pages/course-pages/add-course/add-course.component';
 import { CourseListComponent } from './pages/course-pages/course-list/course-list.component';
+import { AssignCourseComponent } from './pages/student-course/assign-course/assign-course.component';
 
 export const routes: Routes = [
   {
@@ -56,6 +57,11 @@ export const routes: Routes = [
   {
     path: "courses",
     component: CourseListComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'assignCourse',
+    component: AssignCourseComponent,
     canActivate: [AuthGuardService]
   },
   {

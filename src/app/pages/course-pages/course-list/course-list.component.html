@@ -1,1 +1,128 @@
-<p>course-list works!</p>
+<h2>Course List</h2>
+
+<dx-data-grid
+  class="dx-card content-block"
+  [dataSource]="dataSource"
+  [showBorders]="false"
+  [focusedRowEnabled]="true"
+  [focusedRowIndex]="0"
+  [columnAutoWidth]="true"
+  [columnHidingEnabled]="true"
+  (onRowDblClick)="openEditPopup($event)">
+
+  <dxo-data-grid-paging [pageSize]="10"></dxo-data-grid-paging>
+  <dxo-data-grid-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-data-grid-pager>
+  <dxo-data-grid-filter-row [visible]="true"></dxo-data-grid-filter-row>
+  <dxi-data-grid-column
+    dataField="courseId"
+    [width]="100"
+    [hidingPriority]="2">
+  </dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="courseCode"
+    caption="Course Code"
+    [hidingPriority]="8">
+  </dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="courseName"
+    caption="Course Name"
+    [hidingPriority]="6">
+  </dxi-data-grid-column>
+
+  <dxi-data-grid-column
+    dataField="description"
+    caption="Description"
+    [hidingPriority]="5">
+  </dxi-data-grid-column>
+
+  <dxi-data-grid-column
+    dataField="durationMonths"
+    caption="Duration(Months)"
+    [hidingPriority]="4">
+  </dxi-data-grid-column>
+  
+  <dxi-data-grid-column
+    dataField="createdAt"
+    caption="Created At"
+    [hidingPriority]="4">
+  </dxi-data-grid-column>
+  
+</dx-data-grid>
+
+
+<dx-popup
+  [(visible)]="isPopupVisible"
+  title="Edit/Delete student"
+  [width]="'60%'"
+  [height]="400"
+  [showCloseButton]="true"
+  [dragEnabled]="true"
+  [resizeEnabled]="true">
+
+  <dx-form
+  id="userForm"
+  [formData]="formData"
+  labelLocation="top"
+  [colCountByScreen]="{
+    xs: 1,
+    sm: 2,
+    md: 2,
+    lg: 3
+  }"
+>
+
+  <dxi-item
+    dataField="courseCode"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter course code' }">
+  </dxi-item>
+
+  <dxi-item
+    dataField="courseName"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter course name' }">
+  </dxi-item>
+
+  <dxi-item
+    dataField="description"
+    editorType="dxTextBox"
+    [editorOptions]="{ placeholder: 'Enter course description' }">
+  </dxi-item>
+
+  <dxi-item
+    dataField="durationMonths"
+    editorType="dxTextBox"
+    [editorOptions]="{
+        mode: 'number',
+      placeholder: 'Enter course duration in months'
+    }">
+  </dxi-item>
+
+  </dx-form>
+
+  <div class="form-actions">
+
+    <dx-button
+      text="Update"
+      type="success"
+      width="120"
+      (onClick)="updateCourse()">
+    </dx-button>
+
+    <dx-button
+      text="Delete"
+      type="danger"
+      width="120"
+      (onClick)="deleteCourse()"
+      class="delete-btn">
+    </dx-button>
+
+    <dx-button
+      text="Cancel"
+      type="normal"
+      width="120"
+      (onClick)="onCancel()">
+    </dx-button>
+    
+  </div>
+</dx-popup>

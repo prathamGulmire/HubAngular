@@ -75,140 +75,144 @@
   [dragEnabled]="true"
   [resizeEnabled]="true">
 
-  <dx-form
-  id="userForm"
-  [formData]="formData"
-  labelLocation="top"
-  [colCountByScreen]="{
-    xs: 1,
-    sm: 2,
-    md: 2,
-    lg: 3
-  }"
->
+  <div class="popup-container">
 
-  <dxi-item
-    dataField="firstName"
-    editorType="dxTextBox"
-    [editorOptions]="{ placeholder: 'Enter first name' }">
-  </dxi-item>
+    <div class="popup-body">
+      <dx-form
+        id="userForm"
+        [formData]="formData"
+        labelLocation="top"
+        [colCountByScreen]="{
+          xs: 1,
+          sm: 2,
+          md: 2,
+          lg: 3
+        }"
+      >
 
-  <dxi-item
-    dataField="middleName"
-    editorType="dxTextBox"
-    [editorOptions]="{ placeholder: 'Enter middle name' }">
-  </dxi-item>
+      <dxi-item
+        dataField="firstName"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter first name' }">
+      </dxi-item>
 
-  <dxi-item
-    dataField="lastName"
-    editorType="dxTextBox"
-    [editorOptions]="{ placeholder: 'Enter last name' }">
-  </dxi-item>
+      <dxi-item
+        dataField="middleName"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter middle name' }">
+      </dxi-item>
 
-  <dxi-item
-    dataField="email"
-    editorType="dxTextBox"
-    [editorOptions]="{
-      mode: 'email',
-      placeholder: 'Enter email'
-    }">
-  </dxi-item>
+      <dxi-item
+        dataField="lastName"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter last name' }">
+      </dxi-item>
 
-  <dxi-item
-    dataField="gender"
-    editorType="dxSelectBox"
-    [editorOptions]="{
-      items: genders,
-      placeholder: 'Select gender'
-    }">
-  </dxi-item>
+      <dxi-item
+        dataField="email"
+        editorType="dxTextBox"
+        [editorOptions]="{
+          mode: 'email',
+          placeholder: 'Enter email'
+        }">
+      </dxi-item>
 
-  <dxi-item
-    dataField="dateOfBirth"
-    editorType="dxDateBox"
-    [editorOptions]="{
-      type: 'date',
-      displayFormat: 'dd/MM/yyyy'
-    }">
-  </dxi-item>
+      <dxi-item
+        dataField="gender"
+        editorType="dxSelectBox"
+        [editorOptions]="{
+          items: genders,
+          placeholder: 'Select gender'
+        }">
+      </dxi-item>
 
-  <dxi-item
-    dataField="address"
-    editorType="dxTextArea"
-    [editorOptions]="{
-      placeholder: 'Enter address',
-      height: 80
-    }">
-  </dxi-item>
+      <dxi-item
+        dataField="dateOfBirth"
+        editorType="dxDateBox"
+        [editorOptions]="{
+          type: 'date',
+          displayFormat: 'dd/MM/yyyy'
+        }">
+      </dxi-item>
 
-  <dxi-item
-    dataField="country"
-    editorType="dxTextBox"
-    [editorOptions]="{ placeholder: 'Enter country' }">
-  </dxi-item>
->
-  <dxi-item
-    dataField="state"
-    editorType="dxTextBox"
-    [editorOptions]="{ placeholder: 'Enter state' }">
-  </dxi-item>
+      <dxi-item
+        dataField="address"
+        editorType="dxTextArea"
+        [editorOptions]="{
+          placeholder: 'Enter address',
+          height: 80
+        }">
+      </dxi-item>
 
-  <dxi-item
-    dataField="pincode"
-    editorType="dxTextBox"
-    [editorOptions]="{
-      mode: 'number',
-      placeholder: 'Enter pincode'
-    }">
-  </dxi-item>
+      <dxi-item
+        dataField="country"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter country' }">
+      </dxi-item>
+    >
+      <dxi-item
+        dataField="state"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter state' }">
+      </dxi-item>
 
-  <dxi-item
-    dataField="password"
-    editorType="dxTextBox"
-    [editorOptions]="{
-      placeholder: 'Enter password'
-    }">
-  </dxi-item>
+      <dxi-item
+        itemType="simple"
+        label="{ text: 'Profile Image' }">
 
-  <dxi-item
-    itemType="simple"
-    colSpan="3"
-    label="{ text: 'Profile Image' }">
+        <dx-file-uploader
+          accept="image/*"
+          [multiple]="false"
+          uploadMode="useForm"
+          (onValueChanged)="onImageSelected($event)">
+        </dx-file-uploader>
 
-    <dx-file-uploader
-      accept="image/*"
-      [multiple]="false"
-      uploadMode="useForm"
-      (onValueChanged)="onImageSelected($event)">
-    </dx-file-uploader>
+      </dxi-item>
 
-  </dxi-item>
+      <dxi-item
+        dataField="password"
+        editorType="dxTextBox"
+        [editorOptions]="{
+          placeholder: 'Enter password'
+        }">
+      </dxi-item>
 
-  </dx-form>
+      <dxi-item
+        dataField="pincode"
+        editorType="dxTextBox"
+        [editorOptions]="{
+          mode: 'number',
+          placeholder: 'Enter pincode'
+        }">
+      </dxi-item>
 
-  <div class="form-actions">
+      </dx-form>
+    </div>  
 
-    <dx-button
-      text="Update"
-      type="success"
-      width="120"
-      (onClick)="updateUser()">
-    </dx-button>
+    <div class="form-actions">
 
-    <dx-button
-      text="Delete"
-      type="danger"
-      width="120"
-      (onClick)="deleteUser()"
-      class="delete-btn">
-    </dx-button>
-    
-    <dx-button
-      text="Cancel"
-      type="normal"
-      width="120"
-      (onClick)="onCancel()">
-    </dx-button>
+      <dx-button
+        text="Update"
+        type="success"
+        width="120"
+        (onClick)="updateUser()">
+      </dx-button>
 
+      <dx-button
+        text="Delete"
+        type="danger"
+        width="120"
+        (onClick)="deleteUser()"
+        class="delete-btn">
+      </dx-button>
+      
+      <dx-button
+        text="Cancel"
+        type="normal"
+        width="120"
+        (onClick)="onCancel()">
+      </dx-button>
+
+    </div>
   </div>
 </dx-popup>

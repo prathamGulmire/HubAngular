@@ -18,4 +18,8 @@ export class ManageStudentCourse {
     getCourseIdsByStudentId(id: any) {
         return this.http.get(this.backendUrl + '/coursesBySid?sid=' + id);
     }
+
+    unassignCourses(data: any) {
+        return this.http.post(this.backendUrl + '/unassign', data);
+    }
 }

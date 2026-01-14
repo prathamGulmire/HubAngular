@@ -7,27 +7,32 @@ import { TasksComponent } from './pages/tasks/tasks.component';
 import { AddCourseComponent } from './pages/course-pages/add-course/add-course.component';
 import { CourseListComponent } from './pages/course-pages/course-list/course-list.component';
 import { AssignCourseComponent } from './pages/student-course/assign-course/assign-course.component';
+import { UnassignCourseComponent } from './pages/student-course/unassign-course/unassign-course.component';
 
 export const routes: Routes = [
   {
     path: 'students',
     component: TasksComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: { roles: ['admin'] }
   },
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: { roles: ['user', 'admin']}
   },
   {
     path: 'home',
     component: HomeComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: { roles: ['admin'] }
   },
   {
     path: 'home/:id',
     component: HomeComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: { roles: ['admin'] }
   },
   {
     path: 'login-form',
@@ -52,17 +57,26 @@ export const routes: Routes = [
   {
     path: 'addCourse',
     component: AddCourseComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: { roles: ['admin'] }
   },
   {
     path: "courses",
     component: CourseListComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: { roles: ['admin'] }
   },
   {
     path: 'assignCourse',
     component: AssignCourseComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+    data: { roles: ['admin'] }
+  },
+  {
+    path: 'unassignCourse',
+    component: UnassignCourseComponent,
+    canActivate: [AuthGuardService],
+    data: { roles: ['admin'] }
   },
   {
     path: '**',

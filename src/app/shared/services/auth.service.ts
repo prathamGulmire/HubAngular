@@ -5,13 +5,8 @@ import { StudentService } from './student.service';
 export interface IUser {
   email: string;
   studentId: number;
+  role: 'user' | 'admin';
 }
-
-const defaultPath = '/';
-const defaultUser = {
-  email: 'sandra@example.com',
-  avatarUrl: 'https://js.devexpress.com/Demos/WidgetsGallery/JSDemos/images/employees/06.png'
-};
 
 @Injectable({
   providedIn: 'root'
@@ -40,13 +35,26 @@ export class AuthService {
     return this.studentService.login({ email, password });
   }
 
-  handleLoginSuccess(email: string, studentId: number) {
-    this._user = { email, studentId };
+  handleLoginSuccess(email: string, studentId: number, role: 'user' | 'admin') {
+    this._user = { email, studentId, role };
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this._user));
   }
 
   getUser(): IUser | null {
+    const user = localStorage.getItem(this.STORAGE_KEY);
+    if(user) {
+      this._user = JSON.parse(user);
+    }
+    console.log("_user: ", user);
     return this._user;
+  }
+
+  isAdmin(): boolean {
+    return this._user?.role === 'admin';
+  }
+
+  isUser(): boolean {
+    return this._user?.role === 'user';
   }
 
   async createAccount(email: string, password: string) {
@@ -101,7 +109,7 @@ export class AuthService {
   logOut() {
     this._user = null;
     localStorage.removeItem(this.STORAGE_KEY);
-    this.router.navigate(['/login-form']);
+    this.router.navigateByUrl('/login-form', { replaceUrl: true })
   }
 }
 
@@ -111,12 +119,28 @@ export class AuthService {
 export class AuthGuardService implements CanActivate {
   constructor(private router: Router, private authService: AuthService) { }
 
-  canActivate(): boolean {
-    if (this.authService.loggedIn) {
+  canActivate(route: ActivatedRouteSnapshot): boolean {
+    // if (this.authService.loggedIn) {
+    //   return true;
+    // }
+
+    // this.router.navigate(['/login-form']);
+    // return false;
+
+    const user = this.authService.getUser();
+    const allowedRoles = route.data['roles'] as string[];
+
+    if (!user) {
+      this.router.navigate(['/login-form']);
+      return false;
+    }
+
+    if (allowedRoles.includes(user.role)) {
       return true;
     }
 
-    this.router.navigate(['/login-form']);
+    // // Unauthorized
+    // this.router.navigate(['/unauthorized']);
     return false;
   }
 }

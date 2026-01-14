@@ -41,27 +41,19 @@ export class LoginFormComponent implements OnInit {
 
     this.loading = true;
 
-    // setTimeout(() => this.authService.logIn(email, password).subscribe({
-    //   next: (res) => {
-    //     this.loading = false;
-    //     this.authService.handleLoginSuccess(email, res.studentId);
-    //     this.router.navigate(['/home']);
-    //   },
-    //   error: (err) => {
-    //     alert(err?.error?.message || 'Login failed');
-    //   }
-    // }), 3000)
-
     this.authService.logIn(email, password).subscribe({
       next: (res) => {
         this.loading = false;
-        this.authService.handleLoginSuccess(email, res.studentId);
-        this.router.navigate(['/home']);
+        this.authService.handleLoginSuccess(email, res[0].id, res[0].role);
+        if(this.authService.isAdmin()) {
+          this.router.navigate(["/login-form"]);
+        } else {
+          this.router.navigate(["/profile"]);
+        }
       },
       error: (err) => {
         alert(err?.error?.message || 'Login failed');
         this.loading = false;
-        this.router.navigate(["/login-form"]);
       }
     });
   }

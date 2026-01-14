@@ -5,11 +5,14 @@
     <dx-select-box
         class="student-select-box"
         [dataSource]="studentList"
-        displayExpr="firstName"
+        [displayExpr]="displayStudent"
         valueExpr="id"
         width="200"
         placeholder="Select Student"
         [(value)]="selectedStudentId"
+        [searchEnabled]="true"
+        searchMode="contains"
+        [searchExpr]="['id', 'firstName', 'lastName']"
         (onValueChanged)="onStudentChanged($event)">
     </dx-select-box>
 

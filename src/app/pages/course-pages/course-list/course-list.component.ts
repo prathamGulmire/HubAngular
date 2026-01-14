@@ -45,7 +45,8 @@ export class CourseListComponent implements OnInit {
         title: res.message || 'Course details updated successfully!',
         showConfirmButton: false,
         timer: 2000,
-        timerProgressBar: true
+        timerProgressBar: true,
+        // background: '#000000',
       });
 
       this.isPopupVisible = false;
@@ -72,7 +73,19 @@ export class CourseListComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.courseService.deleteCourse(this.formData.courseId).subscribe((res) => {
+        this.courseService.deleteCourse(this.formData.courseId).subscribe((res: any) => {
+          console.log(res);
+          if (!res.success) {
+            Swal.fire({
+              icon: 'info',
+              title: "Can't delete.",
+              text: 'Course is assigned to students!',
+              showConfirmButton: false,
+              timer: 2000,
+            });
+            return;
+          }
+
           Swal.fire({
             toast: true,
             position: 'top-end',

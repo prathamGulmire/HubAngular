@@ -59,70 +59,75 @@
   [dragEnabled]="true"
   [resizeEnabled]="true">
 
-  <dx-form
-  id="userForm"
-  [formData]="formData"
-  labelLocation="top"
-  [colCountByScreen]="{
-    xs: 1,
-    sm: 2,
-    md: 2,
-    lg: 3
-  }"
->
+  <div class="popup-container">
 
-  <dxi-item
-    dataField="courseCode"
-    editorType="dxTextBox"
-    [editorOptions]="{ placeholder: 'Enter course code' }">
-  </dxi-item>
+    <div class="popup-body">
+      <dx-form
+      id="userForm"
+      [formData]="formData"
+      labelLocation="top"
+      [colCountByScreen]="{
+        xs: 1,
+        sm: 2,
+        md: 2,
+        lg: 3
+      }"
+    >
 
-  <dxi-item
-    dataField="courseName"
-    editorType="dxTextBox"
-    [editorOptions]="{ placeholder: 'Enter course name' }">
-  </dxi-item>
+      <dxi-item
+        dataField="courseCode"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter course code' }">
+      </dxi-item>
 
-  <dxi-item
-    dataField="description"
-    editorType="dxTextBox"
-    [editorOptions]="{ placeholder: 'Enter course description' }">
-  </dxi-item>
+      <dxi-item
+        dataField="courseName"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter course name' }">
+      </dxi-item>
 
-  <dxi-item
-    dataField="durationMonths"
-    editorType="dxTextBox"
-    [editorOptions]="{
-        mode: 'number',
-      placeholder: 'Enter course duration in months'
-    }">
-  </dxi-item>
+      <dxi-item
+        dataField="description"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter course description' }">
+      </dxi-item>
 
-  </dx-form>
+      <dxi-item
+        dataField="durationMonths"
+        editorType="dxTextBox"
+        [editorOptions]="{
+            mode: 'number',
+          placeholder: 'Enter course duration in months'
+        }">
+      </dxi-item>
 
-  <div class="form-actions">
-
-    <dx-button
-      text="Update"
-      type="success"
-      width="120"
-      (onClick)="updateCourse()">
-    </dx-button>
-
-    <dx-button
-      text="Delete"
-      type="danger"
-      width="120"
-      (onClick)="deleteCourse()"
-      class="delete-btn">
-    </dx-button>
-
-    <dx-button
-      text="Cancel"
-      type="normal"
-      width="120"
-      (onClick)="onCancel()">
-    </dx-button>
+      </dx-form>
+    </div>
     
+    <div class="form-actions">
+
+      <dx-button
+        text="Update"
+        type="success"
+        width="120"
+        (onClick)="updateCourse()">
+      </dx-button>
+
+      <dx-button
+        text="Delete"
+        type="danger"
+        width="120"
+        (onClick)="deleteCourse()"
+        class="delete-btn">
+      </dx-button>
+
+      <dx-button
+        text="Cancel"
+        type="normal"
+        width="120"
+        (onClick)="onCancel()">
+      </dx-button>
+      
+    </div>
   </div>
 </dx-popup>

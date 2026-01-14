@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DxDataGridModule } from 'devextreme-angular/ui/data-grid';
 import { StudentService } from '../../shared/services/student.service';
 import { Router } from '@angular/router';
-import { DxButtonModule, DxFileUploaderModule, DxFormModule, DxPopupModule } from 'devextreme-angular';
+import { DxButtonModule, DxFileUploaderModule, DxFormModule, DxPopupModule, DxScrollViewModule } from 'devextreme-angular';
 // import AspNetData from 'devextreme-aspnet-data';
 import Swal from 'sweetalert2';
 
@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
   templateUrl: 'tasks.component.html',
   styleUrls: ['tasks.component.scss'],
   standalone: true,
-  imports: [DxDataGridModule, DxPopupModule, DxFormModule, DxFileUploaderModule, DxButtonModule,],
+  imports: [DxDataGridModule, DxPopupModule, DxFormModule, DxFileUploaderModule, DxButtonModule, DxScrollViewModule],
   providers: [
     StudentService
   ]

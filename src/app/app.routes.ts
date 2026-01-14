@@ -11,6 +11,11 @@ import { UnassignCourseComponent } from './pages/student-course/unassign-course/
 
 export const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'profile',
+    pathMatch: 'full'
+  },
+  {
     path: 'students',
     component: TasksComponent,
     canActivate: [AuthGuardService],
@@ -78,8 +83,8 @@ export const routes: Routes = [
     canActivate: [AuthGuardService],
     data: { roles: ['admin'] }
   },
-  {
-    path: '**',
-    redirectTo: 'home'
-  }
+  // {
+  //   path: '**',
+  //   redirectTo: 'home'
+  // }
 ];

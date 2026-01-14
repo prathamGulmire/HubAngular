@@ -45,7 +45,7 @@ export class AuthService {
     if(user) {
       this._user = JSON.parse(user);
     }
-    console.log("_user: ", user);
+    console.log("_user: ", this._user);
     return this._user;
   }
 

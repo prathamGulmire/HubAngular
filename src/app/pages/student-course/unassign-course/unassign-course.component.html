@@ -4,6 +4,8 @@
 
   <!-- Student selection -->
   <dx-select-box
+    class="stud-select-box"
+    width="200"
     [dataSource]="studentList"
     displayExpr="firstName"
     valueExpr="id"
@@ -14,7 +16,7 @@
 
   <!-- Assigned courses -->
   <dx-data-grid
-    class="mt-3"
+    class="course-table"
     [dataSource]="assignedCourses"
     keyExpr="courseId"
     [showBorders]="true"
@@ -29,13 +31,14 @@
   </dx-data-grid>
 
   <!-- Action -->
-  <dx-button
-    class="mt-3"
-    text="Unassign Selected Courses"
-    type="danger"
-    icon="trash"
-    [disabled]="!selectedCourseIds.length"
-    (onClick)="unassignCourses()">
-  </dx-button>
-
+  <div class="unassign-button">
+    <dx-button
+      class="mt-3"
+      text="Unassign Selected Courses"
+      type="danger"
+      icon="trash"
+      [disabled]="!selectedCourseIds.length"
+      (onClick)="unassignCourses()">
+    </dx-button>
+  </div>
 </div>

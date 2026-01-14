@@ -31,7 +31,11 @@ export class LoginFormComponent implements OnInit {
     console.log("Login form component!");
     const res = this.authService.getUser();
     if (res && res.studentId > 0) {
-      this.router.navigate(['/home']);
+      if(this.authService.isAdmin()) {
+        this.router.navigate(["/home"]);
+      } else {
+        this.router.navigate(["/profile"]);
+      }
     }
   }
 

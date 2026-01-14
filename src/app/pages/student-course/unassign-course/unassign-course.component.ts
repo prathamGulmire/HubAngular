@@ -16,8 +16,12 @@ import { CourseService } from '../../../shared/services/course.service';
 export class UnassignCourseComponent implements OnInit {
 
   selectedStudentId!: number;
+
+  assignedCourseIds: any[] = [];
   assignedCourses: any[] = [];
+
   selectedCourseIds: number[] = [];
+
   studentList: any;
 
   courseList: any[] = [];
@@ -28,6 +32,7 @@ export class UnassignCourseComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadStudents();
+    this.loadCourses();
   }
 
   loadStudents() {
@@ -42,6 +47,13 @@ export class UnassignCourseComponent implements OnInit {
     });
   }
 
+  filterAssignedCourses() {
+    this.assignedCourses = this.courseList.filter(c =>
+      this.assignedCourseIds.includes(c.courseId)
+    );
+  }
+
+
   onStudentChanged(e: any) {
 
     this.selectedStudentId = e.value;
@@ -54,9 +66,8 @@ export class UnassignCourseComponent implements OnInit {
 
   loadAssignedCourses(studentId: number) {
     this.studCourse.getCourseIdsByStudentId(studentId).subscribe((res: any) => {
-      this.assignedCourses = res;
-      console.log("StudenId: ", studentId);
-      console.log("Assigned course ids: ", res);
+      this.assignedCourseIds = res;
+      this.filterAssignedCourses();
     });
   }
 
@@ -66,20 +77,35 @@ export class UnassignCourseComponent implements OnInit {
       courseIds: this.selectedCourseIds
     };
 
-    this.studCourse.unassignCourses(payload).subscribe((res: any) => {
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: 'success',
-        title: res.message,
-        showConfirmButton: false,
-        timer: 2000
-      });
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Selected course will be permanently unassigned!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, unassign it!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#d33',
+      backdrop: true,
+      customClass: {
+        popup: 'swal-high-zindex'
+      }
+    }).then((res) => {
+      if (res.isConfirmed) {
+        this.studCourse.unassignCourses(payload).subscribe((res: any) => {
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: res.message,
+            showConfirmButton: false,
+            timer: 2000
+          });
 
-      // Refresh grid
-      this.loadAssignedCourses(this.selectedStudentId);
-      this.selectedCourseIds = [];
+          // Refresh grid
+          this.loadAssignedCourses(this.selectedStudentId);
+          this.selectedCourseIds = [];
+        });
+      }
     });
   }
-
-} 
+}

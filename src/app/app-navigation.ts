@@ -42,7 +42,7 @@ export const navigation: NavigationItem[] = [
         path: '/assignCourse'
       },
       {
-        text: 'Unassign-Course',
+        text: 'Unassign',
         path: '/unassignCourse'
       },
     ]

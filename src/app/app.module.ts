@@ -7,6 +7,8 @@ import { AddCourseComponent } from './pages/course-pages/add-course/add-course.c
 import { CourseListComponent } from './pages/course-pages/course-list/course-list.component';
 import { AssignCourseComponent } from './pages/student-course/assign-course/assign-course.component';
 import { UnassignCourseComponent } from './pages/student-course/unassign-course/unassign-course.component';
+import { MyCoursesComponent } from './pages/course-pages/my-courses/my-courses.component';
+import { CourseEnrollComponent } from './pages/course-pages/course-enroll/course-enroll.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { UnassignCourseComponent } from './pages/student-course/unassign-course/
     AddCourseComponent,
     CourseListComponent,
     AssignCourseComponent,
-    UnassignCourseComponent
+    UnassignCourseComponent,
+    MyCoursesComponent,
+    CourseEnrollComponent
   ],
   imports: [
     BrowserModule,

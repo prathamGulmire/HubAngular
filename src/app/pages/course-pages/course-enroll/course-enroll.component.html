@@ -1,0 +1,28 @@
+<h2>Course Enrollment</h2>
+
+<div class="content-block dx-card responsive-paddings">
+    <dx-data-grid
+        class="courseTable"
+        [dataSource]="courseList"
+        keyExpr="courseId"
+        [showBorders]="true"
+        [selection]="{ mode: 'multiple', allowSelectAll: false }"
+        [selectedRowKeys]="selectedCourseIds"
+        (onSelectionChanged)="onCourseSelectionChanged($event)"
+    >
+        <dxi-column dataField="courseId" [width]="100" caption="Course Id"></dxi-column>
+        <dxi-column dataField="courseCode" caption="Code"></dxi-column>
+        <dxi-column dataField="courseName" caption="Course Name"></dxi-column>
+        <dxi-column dataField="durationMonths" caption="Duration (Months)"></dxi-column>
+    </dx-data-grid>
+
+    <div class="enrollButton">
+        <dx-button
+            text="Enroll Courses"
+            type="success"
+            icon="check"
+            [disabled]="selectedCourseIds.length !== 4"
+            (onClick)="enrollCourses()">
+        </dx-button>
+    </div>
+</div>

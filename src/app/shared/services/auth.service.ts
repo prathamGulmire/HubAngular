@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { StudentService } from './student.service';
+import { Subject } from 'rxjs';
 
 export interface IUser {
   email: string;
@@ -14,6 +15,13 @@ export interface IUser {
 export class AuthService {
   private readonly STORAGE_KEY = 'authUser';
   private _user: IUser | null = null;
+
+  private authChanged = new Subject<void>();
+  authChanged$ = this.authChanged.asObservable();
+
+  notifyAuthChanged() {
+    this.authChanged.next();
+  }
 
   constructor(private router: Router, private studentService: StudentService) {
 
@@ -42,10 +50,10 @@ export class AuthService {
 
   getUser(): IUser | null {
     const user = localStorage.getItem(this.STORAGE_KEY);
-    if(user) {
+    if (user) {
       this._user = JSON.parse(user);
     }
-    console.log("_user: ", this._user);
+    // console.log("_user: ", this._user);
     return this._user;
   }
 

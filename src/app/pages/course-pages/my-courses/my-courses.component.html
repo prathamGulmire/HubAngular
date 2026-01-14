@@ -1,0 +1,46 @@
+<h2>My Enrolled Courses</h2>
+
+<dx-data-grid
+    class="dx-card content-block"
+    [dataSource]="courses"
+    [showBorders]="false"
+    [keyExpr]="'courseId'"
+    [focusedRowEnabled]="true"
+    [focusedRowIndex]="0"
+    [columnAutoWidth]="true"
+    [columnHidingEnabled]="true"
+>
+
+    <dxo-data-grid-paging [pageSize]="10"></dxo-data-grid-paging>
+    <dxo-data-grid-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-data-grid-pager>
+    <dxo-data-grid-filter-row [visible]="true"></dxo-data-grid-filter-row>
+
+    <dxi-data-grid-column
+        dataField="courseId"
+        [width]="100"
+        [hidingPriority]="2">
+    </dxi-data-grid-column>
+    <dxi-data-grid-column
+        dataField="courseCode"
+        caption="Course Code"
+        [hidingPriority]="8">
+    </dxi-data-grid-column>
+    <dxi-data-grid-column
+        dataField="courseName"
+        caption="Course Name"
+        [hidingPriority]="6">
+    </dxi-data-grid-column>
+
+    <dxi-data-grid-column
+        dataField="description"
+        caption="Description"
+        [hidingPriority]="5">
+    </dxi-data-grid-column>
+
+    <dxi-data-grid-column
+        dataField="durationMonths"
+        caption="Duration(Months)"
+        [hidingPriority]="4">
+    </dxi-data-grid-column>
+    
+</dx-data-grid>

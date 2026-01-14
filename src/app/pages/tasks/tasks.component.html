@@ -3,6 +3,7 @@
 <dx-data-grid
   class="dx-card content-block"
   [dataSource]="dataSource"
+  [keyExpr]="'id'"
   [showBorders]="false"
   [focusedRowEnabled]="true"
   [focusedRowIndex]="0"
@@ -51,11 +52,6 @@
     dataField="country"
     caption="country"
     [hidingPriority]="1">
-  </dxi-data-grid-column>
-  <dxi-data-grid-column
-    dataField="password"
-    caption="password"
-    [hidingPriority]="0">
   </dxi-data-grid-column>
 
   <dxi-data-grid-column

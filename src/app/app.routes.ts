@@ -8,6 +8,8 @@ import { AddCourseComponent } from './pages/course-pages/add-course/add-course.c
 import { CourseListComponent } from './pages/course-pages/course-list/course-list.component';
 import { AssignCourseComponent } from './pages/student-course/assign-course/assign-course.component';
 import { UnassignCourseComponent } from './pages/student-course/unassign-course/unassign-course.component';
+import { MyCoursesComponent } from './pages/course-pages/my-courses/my-courses.component';
+import { CourseEnrollComponent } from './pages/course-pages/course-enroll/course-enroll.component';
 
 export const routes: Routes = [
   {
@@ -83,8 +85,20 @@ export const routes: Routes = [
     canActivate: [AuthGuardService],
     data: { roles: ['admin'] }
   },
-  // {
-  //   path: '**',
-  //   redirectTo: 'home'
-  // }
+  {
+    path: 'my-courses',
+    component: MyCoursesComponent,
+    canActivate: [AuthGuardService],
+    data: { roles: ['user'] }
+  },
+  {
+    path: 'enroll-course',
+    component: CourseEnrollComponent,
+    canActivate: [AuthGuardService],
+    data: { roles: ['user'] }
+  },
+  {
+    path: '**',
+    redirectTo: 'profile'
+  }
 ];

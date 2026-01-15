@@ -6,6 +6,7 @@ import { DxDropDownButtonModule } from 'devextreme-angular/ui/drop-down-button';
 import { DxContextMenuModule } from 'devextreme-angular/ui/context-menu';
 import { AuthService } from '../../services';
 import { StudentService } from '../../services/student.service';
+import { EnvironmentCls } from '../../../../environment';
 
 @Component({
   selector: 'app-user-panel',
@@ -26,8 +27,11 @@ export class UserPanelComponent implements OnInit {
   @Input()
   menuMode = 'context';
 
+  isImageFileNameFetched: boolean = false;
+
   student: any;
-  imageBaseUrl = "https://localhost:7262/uploads/";
+  // imageBaseUrl = "https://localhost:7262/uploads/";
+  imageBaseUrl = EnvironmentCls.photoUrl + '/uploads/';
   // imageBaseUrl = "http://172.20.10.3:5000/uploads/";     // mobile hotspot
   // imageBaseUrl = "http://192.168.31.9:5000/uploads/";      // home wifi
 
@@ -41,6 +45,7 @@ export class UserPanelComponent implements OnInit {
       this.student = response[0];
 
       this.imageBaseUrl += this.student.imageUrl;
+      this.isImageFileNameFetched = true;
     });
   }
 }

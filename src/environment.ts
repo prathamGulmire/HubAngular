@@ -1,9 +1,11 @@
 
+const apiBase = 'https://localhost:7262';
+
 export const EnvironmentCls = {
-    apiUrl: 'https://localhost:7262/api',
+    apiUrl: `${apiBase}/api`,
+    photoUrl: `${apiBase}`,
     production: false
 };
-
 
 // backendUrl = "https://localhost:7262/api/"
 // backendUrl = "http://192.168.0.113:5000/api";   // office ethernet

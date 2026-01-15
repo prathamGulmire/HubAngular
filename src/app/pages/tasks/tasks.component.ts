@@ -80,6 +80,7 @@ export class TasksComponent implements OnInit {
 
   deleteUser() {
     this.isPopupVisible = false;
+
     Swal.fire({
       title: 'Are you sure?',
       text: 'This record will be permanently deleted!',
@@ -96,6 +97,18 @@ export class TasksComponent implements OnInit {
       if (result.isConfirmed) {
         this.stud.deleteStudent(this.formData.id).subscribe({
           next: (res) => {
+            // console.log(res);
+            if (!res.success) {
+              Swal.fire({
+                icon: 'info',
+                title: "Can't delete.",
+                text: 'Courses are assigned to students!',
+                showConfirmButton: false,
+                timer: 2000,
+              });
+              return;
+            }
+
             Swal.fire({
               toast: true,
               position: 'top-end',

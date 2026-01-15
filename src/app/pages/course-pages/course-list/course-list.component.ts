@@ -74,7 +74,7 @@ export class CourseListComponent implements OnInit {
       if (result.isConfirmed) {
 
         this.courseService.deleteCourse(this.formData.courseId).subscribe((res: any) => {
-          console.log(res);
+          // console.log(res);
           if (!res.success) {
             Swal.fire({
               icon: 'info',

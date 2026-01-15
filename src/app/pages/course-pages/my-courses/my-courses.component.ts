@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ManageStudentCourse } from '../../../shared/services/manageStudentCourse';
 import { AuthService } from '../../../shared/services';
 import { CourseService } from '../../../shared/services/course.service';
-import { DxDataGridModule, DxPopupModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxPopupModule } from 'devextreme-angular';
 import { forkJoin } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './my-courses.component.html',
   styleUrl: './my-courses.component.scss',
   standalone: true,
-  imports: [DxDataGridModule, DxPopupModule, CommonModule],
+  imports: [DxDataGridModule, DxPopupModule, CommonModule, DxButtonModule],
   providers: [AuthService, ManageStudentCourse, CourseService]
 })
 export class MyCoursesComponent implements OnInit {
@@ -73,5 +73,10 @@ export class MyCoursesComponent implements OnInit {
       this.courseIds.includes(c.courseId)
     );
     console.log(this.courses);
+  }
+
+  onCancel() {
+    this.isPopupVisible = false;
+    this.selectedCourse = null;
   }
 }

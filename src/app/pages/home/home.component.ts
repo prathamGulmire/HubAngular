@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { DxFileUploaderModule, DxFormModule } from 'devextreme-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DxFileUploaderModule, DxFormComponent, DxFormModule, DxValidatorModule } from 'devextreme-angular';
 import {
   DxTextBoxModule,
   DxTextAreaModule,
@@ -14,6 +14,7 @@ import { count } from 'rxjs';
 import { __values } from 'tslib';
 import { AuthService } from '../../shared/services';
 import Swal from 'sweetalert2';
+import { DxiValidationRuleModule } from 'devextreme-angular/ui/nested';
 
 @Component({
   templateUrl: 'home.component.html',
@@ -27,7 +28,9 @@ import Swal from 'sweetalert2';
     DxSelectBoxModule,
     DxDateBoxModule,
     DxButtonModule,
-    DxFileUploaderModule
+    DxFileUploaderModule,
+    DxValidatorModule,
+    DxiValidationRuleModule
   ],
   providers: [
     StudentService,
@@ -37,11 +40,17 @@ import Swal from 'sweetalert2';
 
 export class HomeComponent implements OnInit {
 
+  @ViewChild('myForm', { static: false }) userForm!: DxFormComponent;
+
   colCountByScreen: object;
   isEditMode = false;
   sid!: any;
   genders = ['Male', 'Female', 'Other'];
   selectedImage: File | null = null;
+
+  profileImageFile: File | null = null;
+  profileImageError = false;
+  profileImageErrorMessage = '';
 
   constructor(private studentService: StudentService, private router: Router, private route: ActivatedRoute, private authService: AuthService) {
     this.colCountByScreen = {
@@ -64,7 +73,7 @@ export class HomeComponent implements OnInit {
 
   formData = {
     id: 0,
-    firstName: 'shambhu',
+    firstName: 'Shambhu',
     middleName: 'A',
     lastName: 'Gulmire',
     email: 'sham@gmail.com',
@@ -80,6 +89,35 @@ export class HomeComponent implements OnInit {
 
   onImageSelected(e: any) {
     this.selectedImage = e.value?.[0] || null;
+
+    if (!this.selectedImage) {
+      this.profileImageFile = null;
+      this.profileImageError = true;
+      this.profileImageErrorMessage = 'Profile image is required';
+      return;
+    }
+
+    // Validate file type
+    if (!this.selectedImage.type.startsWith('image/')) {
+      this.profileImageFile = null;
+      this.profileImageError = true;
+      this.profileImageErrorMessage = 'Only image files are allowed';
+      return;
+    }
+
+    // Validate size (2MB)
+    const maxSize = 2 * 1024 * 1024;
+    if (this.selectedImage.size > maxSize) {
+      this.profileImageFile = null;
+      this.profileImageError = true;
+      this.profileImageErrorMessage = 'Image size must be less than 2MB';
+      return;
+    }
+
+    // ✅ Valid file
+    this.profileImageFile = this.selectedImage;
+    this.profileImageError = false;
+    this.profileImageErrorMessage = '';
   }
 
   loadUser(id: string) {
@@ -120,6 +158,18 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmit() {
+
+    const result = this.userForm.instance.validate();
+
+    if (!this.profileImageFile) {
+      this.profileImageError = true;
+      this.profileImageErrorMessage = 'Profile image is required';
+    }
+
+    if (!result.isValid) {
+      return;
+    }
+
     if (this.isEditMode) {
       this.updateUser();
     } else {

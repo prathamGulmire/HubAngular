@@ -3,6 +3,7 @@ import { DxFormModule } from 'devextreme-angular/ui/form';
 import { AuthService } from '../../shared/services';
 import { StudentService } from '../../shared/services/student.service';
 import { CommonModule } from '@angular/common';
+import { EnvironmentCls } from '../../../environment';
 
 @Component({
   templateUrl: 'profile.component.html',
@@ -15,7 +16,8 @@ export class ProfileComponent implements OnInit {
 
   student: any;
   colCountByScreen: object;
-  imageBaseUrl = 'https://localhost:7262/uploads/';
+  imageBaseUrl = EnvironmentCls.photoUrl + '/uploads/';
+  // imageBaseUrl = 'https://localhost:7262/uploads/';
   // imageBaseUrl = 'http://172.20.10.3:5000/uploads/';    // mobile hotspot
   // imageBaseUrl = 'http://192.168.31.9:5000/uploads/';
 

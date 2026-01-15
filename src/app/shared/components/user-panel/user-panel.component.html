@@ -1,6 +1,7 @@
 <div class="user-panel">
   @if (menuMode !== 'list') {
   <dx-drop-down-button
+    *ngIf="isImageFileNameFetched"
     stylingMode="text"
     [icon]="imageBaseUrl"
     [showArrowIcon]="false"

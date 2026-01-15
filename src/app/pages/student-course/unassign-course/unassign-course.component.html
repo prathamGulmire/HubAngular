@@ -33,9 +33,10 @@
     [(selectedRowKeys)]="selectedCourseIds"
     [disabled]="!selectedStudentId">
 
-    <dxi-column dataField="courseCode" caption="Code"></dxi-column>
+    <dxi-column dataField="courseId" caption="Course Id" [alignment]="'center'"></dxi-column>
+    <dxi-column dataField="courseCode" caption="Course Code"></dxi-column>
     <dxi-column dataField="courseName" caption="Course Name"></dxi-column>
-    <dxi-column dataField="durationMonths" caption="Duration (Months)"></dxi-column>
+    <dxi-column dataField="durationMonths" caption="Duration (Months)" [alignment]="'center'"></dxi-column>
 
   </dx-data-grid>
 

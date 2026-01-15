@@ -19,7 +19,8 @@
     <dxi-data-grid-column
         dataField="courseId"
         [width]="100"
-        [hidingPriority]="2">
+        [hidingPriority]="8"
+        [alignment]="'center'">
     </dxi-data-grid-column>
     <dxi-data-grid-column
         dataField="courseCode"
@@ -29,25 +30,21 @@
     <dxi-data-grid-column
         dataField="courseName"
         caption="Course Name"
-        [hidingPriority]="6">
-    </dxi-data-grid-column>
-
-    <dxi-data-grid-column
-        dataField="description"
-        caption="Description"
-        [hidingPriority]="5">
+        [hidingPriority]="6"> 
     </dxi-data-grid-column>
 
     <dxi-data-grid-column
         dataField="durationMonths"
         caption="Duration(Months)"
-        [hidingPriority]="4">
+        [hidingPriority]="5"
+        [alignment]="'center'">
     </dxi-data-grid-column>
     
 </dx-data-grid>
 
 <dx-popup
-  [width]="'60%'"
+  class="course-popup-container"
+  [width]="'70%'"
   [height]="380"
   title="Course Details"
   [showTitle]="true"
@@ -58,22 +55,22 @@
   <div *ngIf="selectedCourse" class="course-popup">
 
     <div class="info-row">
-      <span class="label">Course ID</span>
+      <span class="label">Course ID    </span>
       <span class="value">{{ selectedCourse.courseId }}</span>
     </div>
 
     <div class="info-row">
-        <span class="label">Course Code</span>
+        <span class="label">Course Code </span>
         <span class="label">{{ selectedCourse.courseCode }}</span>
     </div>
 
     <div class="info-row">
-      <span class="label">Course Name</span>
+      <span class="label">Course Name </span>
       <span class="value">{{ selectedCourse.courseName }}</span>
     </div>
 
     <div class="info-row description-row">
-      <span class="label">Description</span>
+      <span class="label">Description  </span>
       <div class="description-box">
         {{ selectedCourse.description }}
       </div>
@@ -85,4 +82,14 @@
     </div>
 
   </div>
+  
+  <div class="form-actions">
+    <dx-button
+      text="Cancel"
+      type="normal"
+      width="120"
+      (onClick)="onCancel()">
+    </dx-button>
+  </div>
+  
 </dx-popup>

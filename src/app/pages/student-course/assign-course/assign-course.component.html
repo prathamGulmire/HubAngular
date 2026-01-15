@@ -33,10 +33,10 @@
         [disabled]="!selectedStudentId"
         (onSelectionChanged)="onCourseSelectionChanged($event)"
     >
-        <dxi-column dataField="courseId" [width]="'20%'" caption="Course Id"></dxi-column>
+        <dxi-column dataField="courseId" [width]="'20%'" caption="Course Id" [alignment]="'center'"></dxi-column>
         <dxi-column dataField="courseCode" [width]="'30%'" caption="Course Code"></dxi-column>
         <dxi-column dataField="courseName" [width]="'30%'" caption="Course Name"></dxi-column>
-        <dxi-column dataField="durationMonths" [width]="'20%'" caption="Duration (Months)"></dxi-column>
+        <dxi-column dataField="durationMonths" [width]="'20%'" caption="Duration (Months)" [alignment]="'center'"></dxi-column>
 
     </dx-data-grid>
 

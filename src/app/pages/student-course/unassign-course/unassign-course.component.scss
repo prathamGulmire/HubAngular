@@ -1,12 +1,28 @@
-.stud-select-box {
-    margin-bottom: 20px;
-}
+
 
 .course-table {
     margin-bottom: 20px;
 }
 
-.unassign-button {
+.unassign-button, .noCourseMsg {
     display: flex;
     justify-content: center;
+}
+
+.swal2-container.swal2-center.swal2-backdrop-show {
+    z-index: 1600;
+}
+
+.swal-high-zindex {
+    z-index: 1600
+}
+
+.unassignHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+    font-style: italic;
+    color: red;
+    flex-wrap: wrap;
 }

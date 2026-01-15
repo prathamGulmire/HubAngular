@@ -2,16 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { StudentService } from '../../../shared/services/student.service';
 import { CourseService } from '../../../shared/services/course.service';
 import { AuthService } from '../../../shared/services';
-import { DxButtonModule, DxDataGridModule, DxTooltipModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxPopupModule, DxTooltipModule } from 'devextreme-angular';
 import { ManageStudentCourse } from '../../../shared/services/manageStudentCourse';
 import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-enroll',
   templateUrl: './course-enroll.component.html',
   styleUrl: './course-enroll.component.scss',
   standalone: true,
-  imports: [DxDataGridModule, DxButtonModule, DxTooltipModule],
+  imports: [DxDataGridModule, DxButtonModule, DxTooltipModule, CommonModule, DxPopupModule],
   providers: []
 })
 export class CourseEnrollComponent implements OnInit {
@@ -22,16 +24,22 @@ export class CourseEnrollComponent implements OnInit {
 
   areCoursesAlreadyEnrolled: boolean = false;
 
+  isPopupVisible: boolean = false;
+  selectedCourse: any = null;
+
   constructor(
     private stud: StudentService,
     private course: CourseService,
     private auth: AuthService,
-    private api: ManageStudentCourse
+    private api: ManageStudentCourse,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     const user = this.auth.user;
     this.studentId = user?.studentId;
+
+    this.areCoursesEnrolled();
 
     this.loadCourses();
   }
@@ -42,8 +50,18 @@ export class CourseEnrollComponent implements OnInit {
     });
   }
 
-  areCoursesEnrolled() {
+  openEditPopup(e: any) {
+    this.isPopupVisible = true;
+    this.selectedCourse = {...e.data};
+    console.log("e.data: ", {...e.data});
+  }
 
+  areCoursesEnrolled() {
+    this.api.getCourseIdsByStudentId(this.studentId).subscribe((res) => {
+      if (res && res.length > 0) {
+        this.areCoursesAlreadyEnrolled = true;
+      }
+    });
   }
 
   onCourseSelectionChanged(e: any) {
@@ -86,10 +104,17 @@ export class CourseEnrollComponent implements OnInit {
       this.api.assignCourse(enrollData).subscribe({
         next: () => {
           Swal.fire({
+            toast: true,
+            position: 'top-end',
             icon: 'success',
             title: 'Enrollment Successful',
-            text: 'Courses have been enrolled successfully!'
+            text: 'Courses have been enrolled successfully!',
+            showConfirmButton: false,
+            timer: 2500,
           });
+
+          // this.areCoursesAlreadyEnrolled = true;
+          this.router.navigate(['/my-courses']);
         },
         error: (err) => {
           Swal.fire({

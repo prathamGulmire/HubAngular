@@ -11,24 +11,26 @@ export const navigation: NavigationItem[] = [
   },
   {
     text: 'Student',
-    icon: 'folder',
+    icon: 'user',
     roles: ['admin', 'user'],
     items: [
       {
         text: 'Profile',
         path: '/profile',
+        // icon: 'card',
         roles: ['user', 'admin']
       },
       {
         text: 'StudentList',
         path: '/students',
+        // icon: 'group',
         roles: ['admin']
       }
     ]
   },
   {
     text: 'Course',
-    icon: 'folder',
+    icon: 'product',
     roles: ['admin', 'user'],
     items: [
       {
@@ -45,12 +47,17 @@ export const navigation: NavigationItem[] = [
         text: 'My-Courses',
         path: '/my-courses',
         roles: ['user']
+      },
+      {
+        text: 'Enroll-Course',
+        path: '/enroll-course',
+        roles: ['user']
       }
     ]
   },
   {
     text: 'ManageStudentCourse',
-    icon: 'folder',
+    icon: 'preferences',
     roles: ['admin'],
     items: [
       {

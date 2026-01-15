@@ -4,13 +4,14 @@ import Swal from 'sweetalert2';
 import { StudentService } from '../../../shared/services/student.service';
 import { ManageStudentCourse } from '../../../shared/services/manageStudentCourse';
 import { CourseService } from '../../../shared/services/course.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-unassign-course',
   templateUrl: './unassign-course.component.html',
   styleUrl: './unassign-course.component.scss',
   standalone: true,
-  imports: [DxDataGridModule, DxButtonModule, DxSelectBoxModule],
+  imports: [DxDataGridModule, DxButtonModule, DxSelectBoxModule, CommonModule],
   providers: [StudentService, ManageStudentCourse]
 })
 export class UnassignCourseComponent implements OnInit {
@@ -70,6 +71,11 @@ export class UnassignCourseComponent implements OnInit {
       this.filterAssignedCourses();
     });
   }
+
+  displayStudent = (item: any) => {
+    if (!item) return '';
+    return `${item.id} ${item.firstName} ${item.lastName}`;
+  };
 
   unassignCourses() {
     const payload = {

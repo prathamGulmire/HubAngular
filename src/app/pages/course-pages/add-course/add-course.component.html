@@ -7,41 +7,52 @@
 
 <div class="content-block dx-card responsive-paddings">
   <dx-form
-  id="userForm"
-  [formData]="formData"
-  labelLocation="top"
-  [colCountByScreen]="{
-    xs: 1,
-    sm: 2,
-    md: 2,
-    lg: 3
-  }"
->
+    id="userForm"
+    [formData]="formData"
+    labelLocation="top"
+    [colCountByScreen]="{
+      xs: 1,
+      sm: 2,
+      md: 2,
+      lg: 3
+    }"
+  >
 
-  <dxi-item
-    dataField="CourseCode"
-    editorType="dxTextBox"
-    [editorOptions]="{ placeholder: 'Enter course code' }">
-  </dxi-item>
-  <dxi-item
-    dataField="CourseName"
-    editorType="dxTextBox"
-    [editorOptions]="{ placeholder: 'Enter course name' }">
-  </dxi-item>
-  <dxi-item
-    dataField="Description"
-    editorType="dxTextBox"
-    [editorOptions]="{ placeholder: 'Enter course description' }">
-  </dxi-item>
-  <dxi-item
-    dataField="DurationMonths"
-    editorType="dxTextBox"
-    [editorOptions]="{
-      mode: 'number',
-      placeholder: 'Enter course duration'
-    }">
-  </dxi-item>
+    <dxi-item
+      dataField="CourseCode"
+      editorType="dxTextBox"
+      [editorOptions]="{ placeholder: 'Enter course code' }">
+    </dxi-item>
+
+    <dxi-item
+      dataField="CourseName"
+      editorType="dxTextBox"
+      [editorOptions]="{ placeholder: 'Enter course name' }">
+    </dxi-item>
+
+    <dxi-item
+      dataField="DurationMonths"
+      editorType="dxNumberBox"
+      [editorOptions]="{
+        min: 1,
+        placeholder: 'Enter course duration (months)'
+      }">
+    </dxi-item>
+
+    <dxi-item
+      dataField="Description"
+      editorType="dxTextArea"
+      [colSpan]="1"
+      [editorOptions]="{
+        placeholder: 'Enter course description',
+        minHeight: 90,
+        autoResizeEnabled: true,
+        showClearButton: true
+      }">
+    </dxi-item>
+
   </dx-form>
+
 
   <div class="form-actions">
 

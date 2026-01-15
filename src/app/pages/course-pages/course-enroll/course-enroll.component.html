@@ -1,28 +1,86 @@
 <h2>Course Enrollment</h2>
 
 <div class="content-block dx-card responsive-paddings">
-    <dx-data-grid
-        class="courseTable"
-        [dataSource]="courseList"
-        keyExpr="courseId"
-        [showBorders]="true"
-        [selection]="{ mode: 'multiple', allowSelectAll: false }"
-        [selectedRowKeys]="selectedCourseIds"
-        (onSelectionChanged)="onCourseSelectionChanged($event)"
-    >
-        <dxi-column dataField="courseId" [width]="100" caption="Course Id"></dxi-column>
-        <dxi-column dataField="courseCode" caption="Code"></dxi-column>
-        <dxi-column dataField="courseName" caption="Course Name"></dxi-column>
-        <dxi-column dataField="durationMonths" caption="Duration (Months)"></dxi-column>
-    </dx-data-grid>
+  <div *ngIf="areCoursesAlreadyEnrolled">
+    <p class="info-title">
+      Course Enrollment Completed
+    </p>
+    <p class="info-text">
+      You have already enrolled in your courses for this term.
+    </p>
+  </div>
 
-    <div class="enrollButton">
-        <dx-button
-            text="Enroll Courses"
-            type="success"
-            icon="check"
-            [disabled]="selectedCourseIds.length !== 4"
-            (onClick)="enrollCourses()">
-        </dx-button>
-    </div>
+  <div *ngIf="!areCoursesAlreadyEnrolled">
+    <p class="info-note">
+      Note: Each student must enroll in exactly 4 courses.
+    </p>
+  </div>
+
+  <dx-data-grid
+    *ngIf="!areCoursesAlreadyEnrolled"
+    class="courseTable"
+    [dataSource]="courseList"
+    keyExpr="courseId"
+    [showBorders]="true"
+    [selection]="{ mode: 'multiple', allowSelectAll: false }"
+    [selectedRowKeys]="selectedCourseIds"
+    (onSelectionChanged)="onCourseSelectionChanged($event)"
+    (onRowDblClick)="openEditPopup($event)"
+  >
+    <dxi-column dataField="courseId" [width]="100" caption="Course ID"></dxi-column>
+    <dxi-column dataField="courseCode" caption="Course Code"></dxi-column>
+    <dxi-column dataField="courseName" caption="Course Name"></dxi-column>
+    <dxi-column dataField="durationMonths" caption="Duration (Months)"></dxi-column>
+  </dx-data-grid>
+
+  <div class="enrollButton" *ngIf="!areCoursesAlreadyEnrolled">
+    <dx-button
+      text="Enroll Courses"
+      type="success"
+      icon="check"
+      [disabled]="selectedCourseIds.length !== 4"
+      (onClick)="enrollCourses()">
+    </dx-button>
+  </div>
 </div>
+
+<dx-popup
+  [width]="'60%'"
+  [height]="380"
+  title="Course Details"
+  [showTitle]="true"
+  [dragEnabled]="true"
+
+  [(visible)]="isPopupVisible"
+>
+  <div *ngIf="selectedCourse" class="course-popup">
+
+    <div class="info-row">
+      <span class="label">Course ID</span>
+      <span class="value">{{ selectedCourse.courseId }}</span>
+    </div>
+
+    <div class="info-row">
+        <span class="label">Course Code</span>
+        <span class="value">{{ selectedCourse.courseCode }}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Course Name</span>
+      <span class="value">{{ selectedCourse.courseName }}</span>
+    </div>
+
+    <div class="info-row description-row">
+      <span class="label">Description</span>
+      <div class="description-box">
+        {{ selectedCourse.description }}
+      </div>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Duration</span>
+      <span class="value">{{ selectedCourse.durationMonths }} months</span>
+    </div>
+
+  </div>
+</dx-popup>

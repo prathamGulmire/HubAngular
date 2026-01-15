@@ -2,34 +2,41 @@
 <h2>Assign Courses</h2>
 
 <div class="content-block dx-card responsive-paddings">
-    <dx-select-box
-        class="student-select-box"
-        [dataSource]="studentList"
-        [displayExpr]="displayStudent"
-        valueExpr="id"
-        width="200"
-        placeholder="Select Student"
-        [(value)]="selectedStudentId"
-        [searchEnabled]="true"
-        searchMode="contains"
-        [searchExpr]="['id', 'firstName', 'lastName']"
-        (onValueChanged)="onStudentChanged($event)">
-    </dx-select-box>
+    
+    <div class="assignHeader">
+        <dx-select-box
+            class="student-select-box"
+            [dataSource]="studentList"
+            [displayExpr]="displayStudent"
+            valueExpr="id"
+            width="200"
+            placeholder="Select Student"
+            [(value)]="selectedStudentId"
+            [searchEnabled]="true"
+            searchMode="contains"
+            [searchExpr]="['id', 'firstName', 'lastName']"
+            (onValueChanged)="onStudentChanged($event)">
+        </dx-select-box>
+
+        <div *ngIf="!selectedStudentId">
+            <p>* Please select student to assign courses</p>
+        </div>
+    </div>
 
     <dx-data-grid
         class="courseTable"
         [dataSource]="courseList"
         keyExpr="courseId"
         [showBorders]="true"
-        [selection]="{ mode: 'multiple' }"
+        [selection]="{ mode: 'multiple', allowSelectAll: false }"
         [selectedRowKeys]="selectedCourseIds"
         [disabled]="!selectedStudentId"
         (onSelectionChanged)="onCourseSelectionChanged($event)"
     >
-
-        <dxi-column dataField="courseCode" caption="Code"></dxi-column>
-        <dxi-column dataField="courseName" caption="Course Name"></dxi-column>
-        <dxi-column dataField="durationMonths" caption="Duration (Months)"></dxi-column>
+        <dxi-column dataField="courseId" [width]="'20%'" caption="Course Id"></dxi-column>
+        <dxi-column dataField="courseCode" [width]="'30%'" caption="Course Code"></dxi-column>
+        <dxi-column dataField="courseName" [width]="'30%'" caption="Course Name"></dxi-column>
+        <dxi-column dataField="durationMonths" [width]="'20%'" caption="Duration (Months)"></dxi-column>
 
     </dx-data-grid>
 
@@ -38,7 +45,7 @@
             text="Assign Courses"
             type="success"
             icon="check"
-            [disabled]="!selectedStudentId || !selectedCourseIds.length"
+            [disabled]="!selectedStudentId || selectedCourseIds.length !== 4"
             (onClick)="assignCourses()">
         </dx-button>
     </div>

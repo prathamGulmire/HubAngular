@@ -3,19 +3,28 @@
 <div class="content-block dx-card responsive-paddings">
 
   <!-- Student selection -->
-  <dx-select-box
-    class="stud-select-box"
-    width="200"
-    [dataSource]="studentList"
-    displayExpr="firstName"
-    valueExpr="id"
-    placeholder="Select Student"
-    [(value)]="selectedStudentId"
-    (onValueChanged)="onStudentChanged($event)">
-  </dx-select-box>
+  <div class="unassignHeader">
+    <dx-select-box
+      class="stud-select-box"
+      width="200"
+      [dataSource]="studentList"
+      [displayExpr]="displayStudent"
+      valueExpr="id"
+      [searchEnabled]="true"
+      searchMode="contains"
+      placeholder="Select Student"
+      [(value)]="selectedStudentId"
+      (onValueChanged)="onStudentChanged($event)">
+    </dx-select-box>
+
+    <div *ngIf="!selectedStudentId">
+      <p>* Please select student to unassign courses</p>
+    </div>
+  </div>
 
   <!-- Assigned courses -->
   <dx-data-grid
+    *ngIf="selectedStudentId && assignedCourses.length > 0"
     class="course-table"
     [dataSource]="assignedCourses"
     keyExpr="courseId"
@@ -30,8 +39,12 @@
 
   </dx-data-grid>
 
+  <div class="noCourseMsg" *ngIf="selectedStudentId && assignedCourses.length <= 0">
+    <p>No courses were assigned to this student!</p>
+  </div>
+
   <!-- Action -->
-  <div class="unassign-button">
+  <div *ngIf="selectedStudentId && assignedCourses.length > 0" class="unassign-button">
     <dx-button
       class="mt-3"
       text="Unassign Selected Courses"

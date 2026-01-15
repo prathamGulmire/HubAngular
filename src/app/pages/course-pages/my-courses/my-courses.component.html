@@ -9,6 +9,7 @@
     [focusedRowIndex]="0"
     [columnAutoWidth]="true"
     [columnHidingEnabled]="true"
+    (onRowDblClick)="openEditPopup($event)"
 >
 
     <dxo-data-grid-paging [pageSize]="10"></dxo-data-grid-paging>
@@ -44,3 +45,44 @@
     </dxi-data-grid-column>
     
 </dx-data-grid>
+
+<dx-popup
+  [width]="'60%'"
+  [height]="380"
+  title="Course Details"
+  [showTitle]="true"
+  [dragEnabled]="true"
+
+  [(visible)]="isPopupVisible"
+>
+  <div *ngIf="selectedCourse" class="course-popup">
+
+    <div class="info-row">
+      <span class="label">Course ID</span>
+      <span class="value">{{ selectedCourse.courseId }}</span>
+    </div>
+
+    <div class="info-row">
+        <span class="label">Course Code</span>
+        <span class="label">{{ selectedCourse.courseCode }}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Course Name</span>
+      <span class="value">{{ selectedCourse.courseName }}</span>
+    </div>
+
+    <div class="info-row description-row">
+      <span class="label">Description</span>
+      <div class="description-box">
+        {{ selectedCourse.description }}
+      </div>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Duration</span>
+      <span class="value">{{ selectedCourse.durationMonths }} months</span>
+    </div>
+
+  </div>
+</dx-popup>

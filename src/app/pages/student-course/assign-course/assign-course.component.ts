@@ -4,13 +4,14 @@ import { CourseService } from '../../../shared/services/course.service';
 import { ManageStudentCourse } from '../../../shared/services/manageStudentCourse';
 import { DxButtonModule, DxDataGridModule, DxSelectBoxModule } from 'devextreme-angular';
 import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-assign-course',
   templateUrl: './assign-course.component.html',
   styleUrl: './assign-course.component.scss',
   standalone: true,
-  imports: [DxSelectBoxModule, DxDataGridModule, DxButtonModule],
+  imports: [DxSelectBoxModule, DxDataGridModule, DxButtonModule, CommonModule],
   providers: [StudentService, CourseService, ManageStudentCourse]
 })
 export class AssignCourseComponent implements OnInit {
@@ -60,6 +61,12 @@ export class AssignCourseComponent implements OnInit {
   }
 
   onCourseSelectionChanged(e: any) {
+
+    if (e.selectedRowKeys.length > 4) {
+      e.component.deselectRows(e.currentSelectedRowKeys);
+      return;
+    }
+
     this.selectedCourseIds = e.selectedRowKeys;
   }
 

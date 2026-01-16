@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CourseService } from '../../../shared/services/course.service';
 import Swal from 'sweetalert2';
-import { DxButtonModule, DxDataGridModule, DxFormModule, DxPopupModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxFormComponent, DxFormModule, DxPopupModule } from 'devextreme-angular';
 
 @Component({
   selector: 'app-course-list',
@@ -13,6 +13,8 @@ import { DxButtonModule, DxDataGridModule, DxFormModule, DxPopupModule } from 'd
   providers: [CourseService]
 })
 export class CourseListComponent implements OnInit {
+
+  @ViewChild('myForm', { static: false }) userForm!: DxFormComponent;
 
   dataSource: any;
   isPopupVisible = false;
@@ -37,6 +39,13 @@ export class CourseListComponent implements OnInit {
   }
 
   updateCourse() {
+
+    const result = this.userForm.instance.validate();
+
+    if (!result.isValid) {
+      return;
+    }
+
     this.courseService.updateCourse(this.formData).subscribe((res) => {
       Swal.fire({
         toast: true,

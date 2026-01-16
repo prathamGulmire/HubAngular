@@ -66,6 +66,7 @@
     <div class="popup-body">
       <dx-form
         id="userForm"
+        #myForm
         [formData]="formData"
         labelLocation="top"
         [colCountByScreen]="{
@@ -80,21 +81,34 @@
           dataField="courseCode"
           editorType="dxTextBox"
           [editorOptions]="{ placeholder: 'Enter course code' }">
+
+          <dxi-validation-rule type="required" message="Course code is required"></dxi-validation-rule>
         </dxi-item>
 
         <dxi-item
           dataField="courseName"
           editorType="dxTextBox"
           [editorOptions]="{ placeholder: 'Enter course name' }">
+
+          <dxi-validation-rule type="required" message="Course name is required"></dxi-validation-rule>
         </dxi-item>
 
         <dxi-item
           dataField="durationMonths"
-          editorType="dxTextBox"
+          editorType="dxNumberBox"
           [editorOptions]="{
-              mode: 'number',
+            min: 1,
+            max: 7,
+            showSpinButtons: true,
             placeholder: 'Enter course duration in months'
           }">
+          <dxi-validation-rule type="required" message="Duration is required"></dxi-validation-rule>
+          <dxi-validation-rule
+            type="range"
+            [min]="0" 
+            [max]="7"
+            message="Duration must be between 0 and 7 months">
+          </dxi-validation-rule>
         </dxi-item>
 
         <dxi-item
@@ -107,6 +121,7 @@
             autoResizeEnabled: true,
             showClearButton: true
           }">
+          <dxi-validation-rule type="required" message="Description is required"></dxi-validation-rule>
         </dxi-item>
       </dx-form>
     </div>

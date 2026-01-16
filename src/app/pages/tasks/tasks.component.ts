@@ -1,27 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxDataGridModule } from 'devextreme-angular/ui/data-grid';
 import { StudentService } from '../../shared/services/student.service';
 import { Router } from '@angular/router';
-import { DxButtonModule, DxFileUploaderModule, DxFormModule, DxPopupModule, DxScrollViewModule } from 'devextreme-angular';
+import { DxButtonModule, DxFileUploaderModule, DxFormComponent, DxFormModule, DxPopupModule, DxScrollViewModule } from 'devextreme-angular';
 // import AspNetData from 'devextreme-aspnet-data';
 import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
 
 @Component({
   templateUrl: 'tasks.component.html',
   styleUrls: ['tasks.component.scss'],
   standalone: true,
-  imports: [DxDataGridModule, DxPopupModule, DxFormModule, DxFileUploaderModule, DxButtonModule, DxScrollViewModule],
+  imports: [
+    DxDataGridModule, 
+    DxPopupModule, 
+    DxFormModule, 
+    DxFileUploaderModule, 
+    DxButtonModule, 
+    DxScrollViewModule,
+    CommonModule
+  ],
   providers: [
     StudentService
   ]
 })
 
 export class TasksComponent implements OnInit {
+
+  @ViewChild('myForm', { static: false }) userForm!: DxFormComponent;
+
   dataSource: any;
   isPopupVisible = false;
   formData: any = {};
   genders = ['Male', 'Female', 'Other'];
   selectedImage: File | null = null;
+
+  profileImageFile: File | null = null;
+  profileImageError = false;
+  profileImageErrorMessage = '';
 
   constructor(private stud: StudentService, private router: Router) {
 
@@ -38,7 +54,34 @@ export class TasksComponent implements OnInit {
   }
 
   onImageSelected(e: any) {
+
     this.selectedImage = e.value?.[0] || null;
+
+    if (!this.selectedImage) {
+      this.profileImageFile = null;
+      this.profileImageError = true;
+      this.profileImageErrorMessage = 'Profile image is required';
+      return;
+    }
+
+    if (!this.selectedImage.type.startsWith('image/')) {
+      this.profileImageFile = null;
+      this.profileImageError = true;
+      this.profileImageErrorMessage = 'Only image files are allowed';
+      return;
+    }
+
+    const maxSize = 2 * 1024 * 1024;
+    if (this.selectedImage.size > maxSize) {
+      this.profileImageFile = null;
+      this.profileImageError = true;
+      this.profileImageErrorMessage = 'Image size must be less than 2MB';
+      return;
+    }
+
+    this.profileImageFile = this.selectedImage;
+    this.profileImageError = false;
+    this.profileImageErrorMessage = '';
   }
 
   getStudents() {
@@ -48,6 +91,17 @@ export class TasksComponent implements OnInit {
   }
 
   updateUser() {
+
+    const result = this.userForm.instance.validate();
+
+    if (!this.profileImageFile) {
+      this.profileImageError = true;
+      this.profileImageErrorMessage = 'Profile image is required';
+    }
+
+    if (!result.isValid) {
+      return;
+    }
 
     const fd = new FormData();
 

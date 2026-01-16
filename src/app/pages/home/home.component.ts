@@ -114,7 +114,6 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    // ✅ Valid file
     this.profileImageFile = this.selectedImage;
     this.profileImageError = false;
     this.profileImageErrorMessage = '';

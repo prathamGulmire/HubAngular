@@ -76,6 +76,7 @@
     <div class="popup-body">
       <dx-form
         id="userForm"
+        #myForm
         [formData]="formData"
         labelLocation="top"
         [colCountByScreen]="{
@@ -90,6 +91,7 @@
         dataField="firstName"
         editorType="dxTextBox"
         [editorOptions]="{ placeholder: 'Enter first name' }">
+        <dxi-validation-rule type="required" message="First name is required"></dxi-validation-rule> 
       </dxi-item>
 
       <dxi-item
@@ -102,6 +104,7 @@
         dataField="lastName"
         editorType="dxTextBox"
         [editorOptions]="{ placeholder: 'Enter last name' }">
+        <dxi-validation-rule type="required" message="Last name is required"></dxi-validation-rule>
       </dxi-item>
 
       <dxi-item
@@ -111,6 +114,8 @@
           mode: 'email',
           placeholder: 'Enter email'
         }">
+        <dxi-validation-rule type="required" message="Email is required"></dxi-validation-rule>
+        <dxi-validation-rule type="email" message="Invalid email"></dxi-validation-rule>
       </dxi-item>
 
       <dxi-item
@@ -120,6 +125,7 @@
           items: genders,
           placeholder: 'Select gender'
         }">
+        <dxi-validation-rule type="required" message="Gender is required"></dxi-validation-rule>
       </dxi-item>
 
       <dxi-item
@@ -129,6 +135,7 @@
           type: 'date',
           displayFormat: 'dd/MM/yyyy'
         }">
+        <dxi-validation-rule type="required" message="Date of birth is required"></dxi-validation-rule>
       </dxi-item>
 
       <dxi-item
@@ -138,18 +145,21 @@
           placeholder: 'Enter address',
           height: 80
         }">
+        <dxi-validation-rule type="required" message="Address is required"></dxi-validation-rule>
       </dxi-item>
 
       <dxi-item
         dataField="country"
         editorType="dxTextBox"
         [editorOptions]="{ placeholder: 'Enter country' }">
+        <dxi-validation-rule type="required" message="Country is required"></dxi-validation-rule>
       </dxi-item>
     >
       <dxi-item
         dataField="state"
         editorType="dxTextBox"
         [editorOptions]="{ placeholder: 'Enter state' }">
+        <dxi-validation-rule type="required" message="State is required"></dxi-validation-rule>
       </dxi-item>
 
       <dxi-item
@@ -163,6 +173,9 @@
           (onValueChanged)="onImageSelected($event)">
         </dx-file-uploader>
 
+        <div class="dx-invalid-message" *ngIf="profileImageError">
+          {{ profileImageErrorMessage }}
+        </div>
       </dxi-item>
 
       <dxi-item
@@ -171,6 +184,11 @@
         [editorOptions]="{
           placeholder: 'Enter password'
         }">
+        <dxi-validation-rule type="required" message="Password is required"></dxi-validation-rule>
+        <dxi-validation-rule type="stringLength"
+            [min]="6"
+            message="Password must be at least 6 characters">
+        </dxi-validation-rule>
       </dxi-item>
 
       <dxi-item
@@ -180,6 +198,12 @@
           mode: 'number',
           placeholder: 'Enter pincode'
         }">
+        <dxi-validation-rule type="required" message="Pincode is required"></dxi-validation-rule>
+        <dxi-validation-rule
+          type="pattern"
+          pattern="^\d{6}$"
+          message="Pincode must be 6 digits">
+        </dxi-validation-rule>
       </dxi-item>
 
       </dx-form>

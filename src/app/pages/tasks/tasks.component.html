@@ -9,6 +9,7 @@
   [focusedRowIndex]="0"
   [columnAutoWidth]="true"
   [columnHidingEnabled]="true"
+  [allowColumnReordering]="true"
   (onRowDblClick)="openEditPopup($event)">
 
   <dxo-data-grid-paging [pageSize]="10"></dxo-data-grid-paging>
@@ -59,6 +60,9 @@
     caption="createdAt"
     [hidingPriority]="3">
   </dxi-data-grid-column>
+
+  <dxo-data-grid-search-panel [visible]="true"></dxo-data-grid-search-panel>
+  <dxo-data-grid-group-panel [visible]="true"></dxo-data-grid-group-panel>
 </dx-data-grid>
 
 

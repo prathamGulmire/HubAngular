@@ -6,6 +6,7 @@ import { DxButtonModule } from 'devextreme-angular/ui/button';
 import { DxLoadIndicatorModule } from 'devextreme-angular/ui/load-indicator';
 import notify from 'devextreme/ui/notify';
 import { AuthService } from '../../services';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class LoginFormComponent implements OnInit {
     console.log("Login form component!");
     const res = this.authService.getUser();
     if (res && res.studentId > 0) {
-      if(this.authService.isAdmin()) {
+      if (this.authService.isAdmin()) {
         this.router.navigate(["/home"]);
       } else {
         this.router.navigate(["/profile"]);
@@ -48,12 +49,24 @@ export class LoginFormComponent implements OnInit {
     this.authService.logIn(email, password).subscribe({
       next: (res) => {
         this.loading = false;
-        this.authService.handleLoginSuccess(email, res[0].id, res[0].role);
-        if(this.authService.isAdmin()) {
-          this.router.navigate(["/login-form"]);
-        } else {
-          this.router.navigate(["/profile"]);
+
+        if (res.length == 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Invalid credentials',
+            timer: 1500,
+            showConfirmButton: false
+          });
+          return;
         }
+
+        this.authService.handleLoginSuccess(email, res[0].id, res[0].role);
+        // if (this.authService.isAdmin()) {
+        //   this.router.navigate(["/login-form"]);
+        // } else {
+        //   this.router.navigate(["/profile"]);
+        // }
+        this.router.navigate(["/profile"]);
       },
       error: (err) => {
         alert(err?.error?.message || 'Login failed');

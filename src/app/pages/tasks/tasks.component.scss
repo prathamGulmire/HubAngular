@@ -12,6 +12,18 @@
   padding: 12px 20px;
 }
 
+::ng-deep .dx-datagrid-search-panel {
+  margin-right: 10px;
+}
+
+::ng-deep .dx-toolbar-before {
+  margin-left: 10px;
+}
+
+::ng-deep .dx-group-panel-message {
+  margin-left: 10px;
+}
+
 /* Optional: adjust the close button color */
 :host ::ng-deep .dx-popup .dx-popup-title .dx-popup-close-button {
   color: white;

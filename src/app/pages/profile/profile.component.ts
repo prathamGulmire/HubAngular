@@ -47,6 +47,10 @@ export class ProfileComponent implements OnInit {
 
         this.student.dateOfBirth = this.student.dateOfBirth.substring(0, 10);
         this.student.updatedAt =  this.student.updatedAt.substring(0, 10) + ' ' + this.student.updatedAt.substring(11, 16);
+
+        if(this.student.role == 'user') {
+          this.student.role = 'student';
+        }
       });
     }
   }

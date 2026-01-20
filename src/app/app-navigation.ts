@@ -71,5 +71,16 @@ export const navigation: NavigationItem[] = [
         roles: ['admin'],
       },
     ]
+  },
+  {
+    text: 'Testing',
+    icon: 'home',
+    roles: ['admin'],
+    items: [
+      {
+        text: 'Test',
+        path: '/test'
+      }
+    ]
   }
 ];

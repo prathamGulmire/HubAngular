@@ -10,6 +10,7 @@ import { AssignCourseComponent } from './pages/student-course/assign-course/assi
 import { UnassignCourseComponent } from './pages/student-course/unassign-course/unassign-course.component';
 import { MyCoursesComponent } from './pages/course-pages/my-courses/my-courses.component';
 import { CourseEnrollComponent } from './pages/course-pages/course-enroll/course-enroll.component';
+import { TestComponent } from './pages/test/test.component';
 
 export const routes: Routes = [
   {
@@ -27,7 +28,7 @@ export const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     canActivate: [AuthGuardService],
-    data: { roles: ['user', 'admin']}
+    data: { roles: ['user', 'admin'] }
   },
   {
     path: 'home',
@@ -96,6 +97,12 @@ export const routes: Routes = [
     component: CourseEnrollComponent,
     canActivate: [AuthGuardService],
     data: { roles: ['user'] }
+  },
+  {
+    path: 'test',
+    component: TestComponent,
+    canActivate: [AuthGuardService],
+    data: { roles: ['admin'] }
   },
   {
     path: '**',

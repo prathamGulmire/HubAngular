@@ -147,6 +147,8 @@ export class AuthGuardService implements CanActivate {
       return true;
     }
 
+    this.router.navigate(['/profile']);
+
     // // Unauthorized
     // this.router.navigate(['/unauthorized']);
     return false;

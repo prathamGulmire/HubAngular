@@ -1,0 +1,378 @@
+<h2>Student/User List</h2>
+
+<dx-data-grid
+  class="dx-card content-block"
+  [dataSource]="dataSource"
+  [keyExpr]="'id'"
+  [showBorders]="false"
+  [focusedRowEnabled]="true"
+  [focusedRowIndex]="0"
+  [columnAutoWidth]="true"
+  [columnHidingEnabled]="true"
+  [allowColumnReordering]="true"
+  (onRowInserting)="insertRow($event)"
+  (onRowRemoving)="removeRow($event)"
+  (onRowUpdating)="updateRow($event)"
+  (onEditingStart)="onEdit($event)"
+  (onInitNewRow)="initNewRow($event)">
+
+  <dxo-data-grid-paging [pageSize]="10"></dxo-data-grid-paging>
+  <dxo-data-grid-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-data-grid-pager>
+  <dxo-data-grid-filter-row [visible]="true"></dxo-data-grid-filter-row>
+
+  <dxo-data-grid-editing 
+    mode="form"
+    [allowUpdating]="true"
+    [allowDeleting]="true"
+    [allowAdding]="true"
+    >
+      <dxo-form>
+        <dxi-item 
+          dataField="firstName" 
+          editorType="dxTextBox"
+          caption="First Name">
+          <dxi-validation-rule type="required" message="First name is required"></dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item dataField="lastName" caption="Last Name">
+          <dxi-validation-rule type="required" message="Last name is required"></dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item dataField="middleName" caption="Middle Name">
+          <dxi-validation-rule type="required" message="Last name is required"></dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item
+          itemType="simple"
+          [label]="{text: 'Profile Image'}"
+          template="profileImageTemplate">
+        </dxi-item>
+        <div *dxTemplate="let data of 'profileImageTemplate'">
+          <dx-file-uploader
+            accept="image/*"
+            [multiple]="false"
+            uploadMode="useForm"
+            (onValueChanged)="onImageSelected($event)">
+          </dx-file-uploader>
+
+          <div class="dx-invalid-message" *ngIf="profileImageError">
+            {{ profileImageErrorMessage }}
+          </div>
+        </div>
+
+        <dxi-item
+          dataField="email"
+          editorType="dxTextBox"
+          [editorOptions]="{
+            mode: 'email',
+            placeholder: 'Enter email'
+          }">
+          <dxi-validation-rule type="required" message="Email is required"></dxi-validation-rule>
+          <dxi-validation-rule type="email" message="Invalid email"></dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item
+          dataField="gender"
+          editorType="dxSelectBox"
+          [editorOptions]="{
+            items: genders,
+            placeholder: 'Select gender'
+          }">
+          <dxi-validation-rule type="required" message="Gender is required"></dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item
+          dataField="dateOfBirth"
+          editorType="dxDateBox"
+          [editorOptions]="{
+            type: 'date',
+            displayFormat: 'dd/MM/yyyy',
+            dateSerializationFormat: 'yyyy-MM-dd'
+          }">
+          <dxi-validation-rule type="required" message="Date of birth is required"></dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item
+          dataField="address"
+          editorType="dxTextArea"
+          [editorOptions]="{
+            placeholder: 'Enter address',
+            height: 80
+          }">
+          <dxi-validation-rule type="required" message="Address is required"></dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item
+          dataField="country"
+          editorType="dxTextBox"
+          [editorOptions]="{ placeholder: 'Enter country' }">
+          <dxi-validation-rule type="required" message="Country is required"></dxi-validation-rule>
+        </dxi-item>
+      
+        <dxi-item
+          dataField="state"
+          editorType="dxTextBox"
+          [editorOptions]="{ placeholder: 'Enter state' }">
+          <dxi-validation-rule type="required" message="State is required"></dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item
+          dataField="password"
+          editorType="dxTextBox"
+          [editorOptions]="{
+            placeholder: 'Enter password'
+          }">
+          <dxi-validation-rule type="required" message="Password is required"></dxi-validation-rule>
+          <dxi-validation-rule type="stringLength"
+              [min]="6"
+              message="Password must be at least 6 characters">
+          </dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item
+          dataField="pincode"
+          editorType="dxTextBox"
+          [editorOptions]="{
+            mode: 'number',
+            placeholder: 'Enter pincode'
+          }">
+          <dxi-validation-rule type="required" message="Pincode is required"></dxi-validation-rule>
+          <dxi-validation-rule
+            type="pattern"
+            pattern="^\d{6}$"
+            message="Pincode must be 6 digits">
+          </dxi-validation-rule>
+        </dxi-item>
+      </dxo-form>
+  </dxo-data-grid-editing>
+
+  <dxi-data-grid-column
+    dataField="id"
+    [width]="70"
+    [hidingPriority]="2">
+  </dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="firstName"
+    caption="firstName"
+    [hidingPriority]="8">
+  </dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="lastName"
+    caption="lastName"
+    [hidingPriority]="6">
+  </dxi-data-grid-column>
+  <dxi-data-grid-column dataField="middleName" [visible]="false"></dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="email"
+    caption="email"
+    [hidingPriority]="5">
+  </dxi-data-grid-column>
+
+  <dxi-data-grid-column
+    dataField="gender"
+    caption="gender"
+    [allowSorting]="false"
+    [hidingPriority]="7">
+  </dxi-data-grid-column>
+  
+  <dxi-data-grid-column
+    dataField="address"
+    caption="address"
+    [hidingPriority]="4">
+  </dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="country"
+    caption="country"
+    [hidingPriority]="1">
+  </dxi-data-grid-column>
+
+  <dxi-data-grid-column dataField="state" [visible]="false"></dxi-data-grid-column>
+  <dxi-data-grid-column dataField="pincode" [visible]="false"></dxi-data-grid-column>
+  <dxi-data-grid-column dataField="password" [visible]="false"></dxi-data-grid-column>
+  <dxi-data-grid-column dataField="dateOfBirth" [visible]="false"></dxi-data-grid-column>
+
+  <dxi-data-grid-column
+    dataField="createdAt"
+    caption="createdAt"
+    [hidingPriority]="3">
+  </dxi-data-grid-column>
+
+  <dxo-data-grid-search-panel [visible]="true"></dxo-data-grid-search-panel>
+  <dxo-data-grid-group-panel [visible]="true"></dxo-data-grid-group-panel>
+</dx-data-grid>
+
+
+<dx-popup
+  [(visible)]="isPopupVisible"
+  title="Edit/Delete student"
+  [width]="'80%'"
+  [height]="600"
+  [showCloseButton]="true"
+  [dragEnabled]="true"
+  [resizeEnabled]="true">
+
+  <div class="popup-container">
+
+    <div class="popup-body">
+      <dx-form
+        id="userForm"
+        #myForm
+        [formData]="formData"
+        labelLocation="top"
+        [colCountByScreen]="{
+          xs: 1,
+          sm: 2,
+          md: 2,
+          lg: 3
+        }"
+      >
+
+      <dxi-item
+        dataField="firstName"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter first name' }">
+        <dxi-validation-rule type="required" message="First name is required"></dxi-validation-rule> 
+      </dxi-item>
+
+      <dxi-item
+        dataField="middleName"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter middle name' }">
+      </dxi-item>
+
+      <dxi-item
+        dataField="lastName"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter last name' }">
+        <dxi-validation-rule type="required" message="Last name is required"></dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item
+        dataField="email"
+        editorType="dxTextBox"
+        [editorOptions]="{
+          mode: 'email',
+          placeholder: 'Enter email'
+        }">
+        <dxi-validation-rule type="required" message="Email is required"></dxi-validation-rule>
+        <dxi-validation-rule type="email" message="Invalid email"></dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item
+        dataField="gender"
+        editorType="dxSelectBox"
+        [editorOptions]="{
+          items: genders,
+          placeholder: 'Select gender'
+        }">
+        <dxi-validation-rule type="required" message="Gender is required"></dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item
+        dataField="dateOfBirth"
+        editorType="dxDateBox"
+        [editorOptions]="{
+          type: 'date',
+          displayFormat: 'dd/MM/yyyy'
+        }">
+        <dxi-validation-rule type="required" message="Date of birth is required"></dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item
+        dataField="address"
+        editorType="dxTextArea"
+        [editorOptions]="{
+          placeholder: 'Enter address',
+          height: 80
+        }">
+        <dxi-validation-rule type="required" message="Address is required"></dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item
+        dataField="country"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter country' }">
+        <dxi-validation-rule type="required" message="Country is required"></dxi-validation-rule>
+      </dxi-item>
+    >
+      <dxi-item
+        dataField="state"
+        editorType="dxTextBox"
+        [editorOptions]="{ placeholder: 'Enter state' }">
+        <dxi-validation-rule type="required" message="State is required"></dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item
+        itemType="simple"
+        label="{ text: 'Profile Image' }">
+
+        <dx-file-uploader
+          accept="image/*"
+          [multiple]="false"
+          uploadMode="useForm"
+          (onValueChanged)="onImageSelected($event)">
+        </dx-file-uploader>
+
+        <div class="dx-invalid-message" *ngIf="profileImageError">
+          {{ profileImageErrorMessage }}
+        </div>
+      </dxi-item>
+
+      <dxi-item
+        dataField="password"
+        editorType="dxTextBox"
+        [editorOptions]="{
+          placeholder: 'Enter password'
+        }">
+        <dxi-validation-rule type="required" message="Password is required"></dxi-validation-rule>
+        <dxi-validation-rule type="stringLength"
+            [min]="6"
+            message="Password must be at least 6 characters">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item
+        dataField="pincode"
+        editorType="dxTextBox"
+        [editorOptions]="{
+          mode: 'number',
+          placeholder: 'Enter pincode'
+        }">
+        <dxi-validation-rule type="required" message="Pincode is required"></dxi-validation-rule>
+        <dxi-validation-rule
+          type="pattern"
+          pattern="^\d{6}$"
+          message="Pincode must be 6 digits">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      </dx-form>
+    </div>  
+
+    <div class="form-actions">
+
+      <dx-button
+        text="Update"
+        type="success"
+        width="120"
+        (onClick)="updateUser()">
+      </dx-button>
+
+      <dx-button
+        text="Delete"
+        type="danger"
+        width="120"
+        (onClick)="deleteUser()"
+        class="delete-btn">
+      </dx-button>
+      
+      <dx-button
+        text="Cancel"
+        type="normal"
+        width="120"
+        (onClick)="onCancel()">
+      </dx-button>
+
+    </div>
+  </div>
+</dx-popup>

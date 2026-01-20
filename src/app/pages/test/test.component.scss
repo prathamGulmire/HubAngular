@@ -1,0 +1,86 @@
+::ng-deep .dx-datagrid-filter-row {
+  background-color: transparent;
+}
+
+/* Header background color */
+:host ::ng-deep .dx-popup .dx-popup-title {
+  background-color: #4caf50;
+  /* green header */
+  color: white;
+  /* text color */
+  font-weight: 600;
+  padding: 12px 20px;
+}
+
+::ng-deep .dx-datagrid-search-panel {
+  margin-right: 10px;
+}
+::ng-deep .dx-swatch-dark .dx-datagrid-search-panel {
+  margin-right: 10px;
+}
+
+::ng-deep .dx-toolbar-before {
+  margin-left: 10px;
+}
+
+::ng-deep .dx-group-panel-message {
+  margin-left: 10px;
+}
+
+/* Optional: adjust the close button color */
+:host ::ng-deep .dx-popup .dx-popup-title .dx-popup-close-button {
+  color: white;
+}
+
+
+::ng-deep .delete {
+  margin-top: 15px;
+}
+
+// .form-actions {
+//   margin-top: 25px;
+//   margin-bottom: 20px;
+//   display: flex;
+//   justify-content: center;
+//   gap: 15px;
+// }
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 16px;
+  padding-top: 25px;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  box-shadow: 0px -6px 6px 0px rgba(0, 0, 0, 0.08);;
+}
+
+:host ::ng-deep .delete-btn .dx-button {
+  font-weight: 600;
+}
+
+.swal-high-zindex {
+  z-index: 99999 !important;
+}
+
+.swal2-container {
+  z-index: 99998 !important;
+}
+
+.popup-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.popup-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.dx-invalid-message{
+  color: red;
+}

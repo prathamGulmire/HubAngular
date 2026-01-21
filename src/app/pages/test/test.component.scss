@@ -84,3 +84,11 @@
 .dx-invalid-message{
   color: red;
 }
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}

@@ -14,7 +14,8 @@
   (onRowRemoving)="removeRow($event)"
   (onRowUpdating)="updateRow($event)"
   (onEditingStart)="onEdit($event)"
-  (onInitNewRow)="initNewRow($event)">
+  (onInitNewRow)="initNewRow($event)"
+  (onRowValidating)="onRowValidating($event)">
 
   <dxo-data-grid-paging [pageSize]="10"></dxo-data-grid-paging>
   <dxo-data-grid-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-data-grid-pager>
@@ -44,21 +45,28 @@
 
         <dxi-item
           itemType="simple"
-          [label]="{text: 'Profile Image'}"
-          template="profileImageTemplate">
-        </dxi-item>
-        <div *dxTemplate="let data of 'profileImageTemplate'">
-          <dx-file-uploader
-            accept="image/*"
-            [multiple]="false"
-            uploadMode="useForm"
-            (onValueChanged)="onImageSelected($event)">
-          </dx-file-uploader>
+          [label]="{ text: 'Profile Image' }">
+
+          <ng-container *ngIf="showUploader">
+            <dx-file-uploader
+              accept="image/*"
+              [multiple]="false"
+              uploadMode="useForm"
+              (onValueChanged)="onImageSelected($event)">
+            </dx-file-uploader>
+          </ng-container>
+
+          <img
+            *ngIf="imagePreviewUrl"
+            [src]="imagePreviewUrl"
+            class="image-preview"/>
 
           <div class="dx-invalid-message" *ngIf="profileImageError">
             {{ profileImageErrorMessage }}
           </div>
-        </div>
+        </dxi-item>
+
+
 
         <dxi-item
           dataField="email"
@@ -190,6 +198,7 @@
   <dxi-data-grid-column dataField="pincode" [visible]="false"></dxi-data-grid-column>
   <dxi-data-grid-column dataField="password" [visible]="false"></dxi-data-grid-column>
   <dxi-data-grid-column dataField="dateOfBirth" [visible]="false"></dxi-data-grid-column>
+  <dxi-data-grid-column dataField="imageUrl" [visible]="false"></dxi-data-grid-column>
 
   <dxi-data-grid-column
     dataField="createdAt"
@@ -201,9 +210,8 @@
   <dxo-data-grid-group-panel [visible]="true"></dxo-data-grid-group-panel>
 </dx-data-grid>
 
-
 <dx-popup
-  [(visible)]="isPopupVisible"
+  [visible]="false"
   title="Edit/Delete student"
   [width]="'80%'"
   [height]="600"
@@ -217,7 +225,7 @@
       <dx-form
         id="userForm"
         #myForm
-        [formData]="formData"
+        [formData]=""
         labelLocation="top"
         [colCountByScreen]="{
           xs: 1,
@@ -355,7 +363,7 @@
         text="Update"
         type="success"
         width="120"
-        (onClick)="updateUser()">
+        (onClick)="updateUser({})">
       </dx-button>
 
       <dx-button

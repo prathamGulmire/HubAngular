@@ -12,6 +12,16 @@ import { CourseEnrollComponent } from './pages/course-pages/course-enroll/course
 
 @NgModule({
   declarations: [
+    // TestComponent,
+    // AddCourseComponent,
+    // CourseListComponent,
+    // AssignCourseComponent,
+    // UnassignCourseComponent,
+    // MyCoursesComponent,
+    // CourseEnrollComponent
+  ],
+  imports: [
+    BrowserModule,
     TestComponent,
     AddCourseComponent,
     CourseListComponent,
@@ -19,10 +29,6 @@ import { CourseEnrollComponent } from './pages/course-pages/course-enroll/course
     UnassignCourseComponent,
     MyCoursesComponent,
     CourseEnrollComponent
-  ],
-  imports: [
-    BrowserModule,
-    // AppComponent
   ],
   providers: [],
   // bootstrap: [AppComponent]  

@@ -4,6 +4,7 @@ import { StudentService } from '../../shared/services/student.service';
 import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormComponent, DxFormModule, DxPopupModule } from 'devextreme-angular';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { EnvironmentCls } from '../../../environment';
 
 @Component({
   selector: 'app-test',
@@ -15,14 +16,17 @@ import { CommonModule } from '@angular/common';
 export class TestComponent {
 
   dataSource: any;
-  isPopupVisible = false;
-  formData: any = null;
   genders = ['Male', 'Female', 'Other'];
-  selectedImage: File | null = null;
 
   profileImageFile: File | null = null;
   profileImageError = false;
   profileImageErrorMessage = '';
+
+  imagePreviewUrl: string | null = null;
+
+  showUploader = true;
+
+  readonly IMAGE_BASE_URL = `${EnvironmentCls.photoUrl}/uploads/`;
 
   constructor(private stud: StudentService, private router: Router) {
 
@@ -32,42 +36,122 @@ export class TestComponent {
     this.getStudents();
   }
 
-  openEditPopup(e: any) {
-    this.formData = { ...e.data };
-    this.isPopupVisible = true;
+  onEdit(e: any) {
+    console.log('onEdit executed!', e.data);
+    this.resetUploader();
+
+    if (e.data?.imageUrl) {
+      this.imagePreviewUrl =
+        this.IMAGE_BASE_URL + e.data.imageUrl;
+    } else {
+      this.imagePreviewUrl = null;
+    }
+
+    this.profileImageFile = null; // reset file input
   }
 
-  onEdit(e: any) {
-    console.log("onEdit executed!", e.data);
+  resetUploader() {
+    this.showUploader = false;
+    this.profileImageFile = null;
+    this.imagePreviewUrl = null;
+
+    // let Angular destroy component
+    setTimeout(() => {
+      this.showUploader = true;
+    });
   }
 
   initNewRow(e: any) {
     console.log("initNewRow executed!");
+    this.resetUploader();
 
     e.data = {
       id: 0,
-      firstName: '',
-      middleName: '',
-      lastName: '',
-      email: '',
-      gender: null,
+      firstName: 'shambhu',
+      middleName: 'dfdd',
+      lastName: 'gulmire',
+      email: 'djdj@gmail.com',
+      gender: 'Male',
       dateOfBirth: null,
-      address: '',
-      country: '',
-      state: '',
-      pincode: '',
-      password: '',
-      imageFile: ''
+      address: 'dmdvdkfj',
+      country: 'india',
+      state: 'maharashtra',
+      pincode: '413307',
+      password: 'kdjvdvd',
+      imageUrl: ''
     };
   }
 
+  onRowValidating(e: any) {
+    console.log("onRowValidating executed!");
+    // Only validate image on INSERT
+
+    if (!this.profileImageFile) {
+      e.isValid = false;
+
+      // e.errorText = 'Profile image is required';
+
+      this.profileImageError = true;
+      this.profileImageErrorMessage = 'Profile image is required';
+    }
+  }
+
+
   insertRow(e: any) {
-    console.log("insertRow executed!", e.data);
+    const fd = new FormData();
+
+    // if (!this.profileImageFile) {
+    //   this.profileImageError = true;
+    //   this.profileImageErrorMessage = 'Profile image is required';
+
+    //   e.cancel = true;
+    //   return;
+    // }
+
+    Object.keys(e.data).forEach(key => {
+      if (e.data[key] !== null && e.data[key] !== undefined) {
+        fd.append(key, e.data[key]);
+      }
+    });
+
+    if (this.profileImageFile) {
+      fd.append('imageFile', this.profileImageFile);
+    }
+
+    console.log('INSERT payload ready', e.data);
+    console.log('With image file:', this.profileImageFile);
+    // call API here
+
+    this.addUser(fd);
+  }
+
+  addUser(data: any) {
+    this.stud.addStudent(data).subscribe((res) => {
+      console.log("Student added successfully!", res);
+      this.getStudents();
+    });
   }
 
   updateRow(e: any) {
-    console.log('newData:', e.newData);
-    console.log('oldData:', e.oldData);
+    const updatedData = {
+      ...e.oldData,
+      ...e.newData
+    };
+
+    const fd = new FormData();
+    Object.keys(updatedData).forEach(key => {
+      fd.append(key, updatedData[key]);
+    });
+
+    if (this.profileImageFile) {
+      fd.append('imageFile', this.profileImageFile);
+    }
+
+    this.profileImageFile = null;
+    console.log('UPDATE payload ready', updatedData);
+
+    this.updateUser(fd);
+    // call API here
   }
 
   removeRow(e: any) {
@@ -76,68 +160,64 @@ export class TestComponent {
   }
 
   onImageSelected(e: any) {
+    const file = e.value?.[0];
 
-    this.selectedImage = e.value?.[0] || null;
-
-    if (!this.selectedImage) {
-      this.profileImageFile = null;
+    if (!file) {
       this.profileImageError = true;
       this.profileImageErrorMessage = 'Profile image is required';
       return;
     }
 
-    if (!this.selectedImage.type.startsWith('image/')) {
-      this.profileImageFile = null;
+    if (!file.type.startsWith('image/')) {
       this.profileImageError = true;
       this.profileImageErrorMessage = 'Only image files are allowed';
       return;
     }
 
-    const maxSize = 2 * 1024 * 1024;
-    if (this.selectedImage.size > maxSize) {
-      this.profileImageFile = null;
+    if (file.size > 2 * 1024 * 1024) {
       this.profileImageError = true;
       this.profileImageErrorMessage = 'Image size must be less than 2MB';
       return;
     }
 
-    this.profileImageFile = this.selectedImage;
+    this.profileImageFile = file;
     this.profileImageError = false;
     this.profileImageErrorMessage = '';
+
+    // 🔥 Image preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreviewUrl = reader.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 
   getStudents() {
     this.stud.getStudent(0).subscribe((res) => {
       this.dataSource = res;
-      console.log(res);
     });
   }
 
-  updateUser() {
+  updateUser(data: any) {
 
-    if (!this.profileImageFile) {
-      this.profileImageError = true;
-      this.profileImageErrorMessage = 'Profile image is required';
-    }
+    // const fd = new FormData();
 
-    const fd = new FormData();
+    // Object.keys(this.formData).forEach(key => {
+    //   if (this.formData[key] !== null && this.formData[key] !== undefined) {
 
-    Object.keys(this.formData).forEach(key => {
-      if (this.formData[key] !== null && this.formData[key] !== undefined) {
-
-        if (key !== 'imageFile') {
-          fd.append(key, this.formData[key]);
-        }
-      }
-    });
+    //     if (key !== 'imageFile') {
+    //       fd.append(key, this.formData[key]);
+    //     }
+    //   }
+    // });
 
     // if (this.selectedImage) {
     //   fd.append('imageFile', this.selectedImage);
     // }
 
-    fd.append('imageFile', this.formData.imageFile);
+    // fd.append('imageFile', this.formData.imageFile);
 
-    this.stud.updateStudent(fd).subscribe((res) => {
+    this.stud.updateStudent(data).subscribe((res) => {
       console.log(res);
       Swal.fire({
         toast: true,
@@ -148,15 +228,12 @@ export class TestComponent {
         timer: 2000,
         timerProgressBar: true
       });
-      this.isPopupVisible = false;
       this.getStudents();
       this.router.navigate(["/students"]);
     });
   }
 
   deleteUser() {
-    this.isPopupVisible = false;
-
     Swal.fire({
       title: 'Are you sure?',
       text: 'This record will be permanently deleted!',
@@ -171,7 +248,7 @@ export class TestComponent {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        this.stud.deleteStudent(this.formData.id).subscribe({
+        this.stud.deleteStudent(0).subscribe({
           next: (res) => {
             // console.log(res);
             if (!res.success) {
@@ -207,6 +284,6 @@ export class TestComponent {
   }
 
   onCancel() {
-    this.isPopupVisible = false;
+    // this.isPopupVisible = false;
   }
 }

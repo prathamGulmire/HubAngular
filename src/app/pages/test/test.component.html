@@ -26,21 +26,36 @@
     [allowUpdating]="true"
     [allowDeleting]="true"
     [allowAdding]="true"
+    [confirmDelete]="false"
     >
       <dxo-form>
+
         <dxi-item 
           dataField="firstName" 
           editorType="dxTextBox"
-          caption="First Name">
+          caption="First Name"
+          [editorOptions]="{
+            placeholder: 'Enter first name'
+          }">
           <dxi-validation-rule type="required" message="First name is required"></dxi-validation-rule>
         </dxi-item>
 
-        <dxi-item dataField="lastName" caption="Last Name">
+        <dxi-item 
+          dataField="lastName" 
+          caption="Last Name"
+          [editorOptions]="{
+            placeholder: 'Enter Last Name'
+          }">
           <dxi-validation-rule type="required" message="Last name is required"></dxi-validation-rule>
         </dxi-item>
 
-        <dxi-item dataField="middleName" caption="Middle Name">
-          <dxi-validation-rule type="required" message="Last name is required"></dxi-validation-rule>
+        <dxi-item 
+        dataField="middleName" 
+        caption="Middle Name"
+        [editorOptions]="{
+          placeholder: 'Enter Middle Name'
+        }">
+          <!-- <dxi-validation-rule type="required" message="Last name is required"></dxi-validation-rule> -->
         </dxi-item>
 
         <dxi-item
@@ -59,14 +74,12 @@
           <img
             *ngIf="imagePreviewUrl"
             [src]="imagePreviewUrl"
-            class="image-preview"/>
+            class="profile-img"/>
 
           <div class="dx-invalid-message" *ngIf="profileImageError">
             {{ profileImageErrorMessage }}
           </div>
         </dxi-item>
-
-
 
         <dxi-item
           dataField="email"
@@ -159,17 +172,19 @@
     [width]="70"
     [hidingPriority]="2">
   </dxi-data-grid-column>
+
   <dxi-data-grid-column
     dataField="firstName"
     caption="firstName"
     [hidingPriority]="8">
   </dxi-data-grid-column>
+
   <dxi-data-grid-column
     dataField="lastName"
     caption="lastName"
     [hidingPriority]="6">
   </dxi-data-grid-column>
-  <dxi-data-grid-column dataField="middleName" [visible]="false"></dxi-data-grid-column>
+  
   <dxi-data-grid-column
     dataField="email"
     caption="email"
@@ -188,12 +203,14 @@
     caption="address"
     [hidingPriority]="4">
   </dxi-data-grid-column>
+
   <dxi-data-grid-column
     dataField="country"
     caption="country"
     [hidingPriority]="1">
   </dxi-data-grid-column>
 
+  <dxi-data-grid-column dataField="middleName" [visible]="false"></dxi-data-grid-column>
   <dxi-data-grid-column dataField="state" [visible]="false"></dxi-data-grid-column>
   <dxi-data-grid-column dataField="pincode" [visible]="false"></dxi-data-grid-column>
   <dxi-data-grid-column dataField="password" [visible]="false"></dxi-data-grid-column>
@@ -370,7 +387,7 @@
         text="Delete"
         type="danger"
         width="120"
-        (onClick)="deleteUser()"
+        (onClick)="deleteUser(0)"
         class="delete-btn">
       </dx-button>
       

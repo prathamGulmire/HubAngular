@@ -1,5 +1,5 @@
 
-const apiBase = 'http://172.20.10.3:5000';
+const apiBase = 'https://localhost:7262';
 
 export const EnvironmentCls = {
     apiUrl: `${apiBase}/api`,

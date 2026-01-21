@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { StudentService } from '../../shared/services/student.service';
-import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormComponent, DxFormModule, DxPopupModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxFileUploaderModule, DxFormComponent, DxFormModule, DxPopupModule } from 'devextreme-angular';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { EnvironmentCls } from '../../../environment';
@@ -15,16 +15,23 @@ import { EnvironmentCls } from '../../../environment';
 })
 export class TestComponent {
 
+  @ViewChild(DxDataGridComponent, { static: false })
+  dataGrid!: DxDataGridComponent;
+
+  currentEditKey: any = null;
+
   dataSource: any;
   genders = ['Male', 'Female', 'Other'];
 
-  profileImageFile: File | null = null;
+  profileImageFile: File | null = null; 
   profileImageError = false;
   profileImageErrorMessage = '';
 
   imagePreviewUrl: string | null = null;
 
   showUploader = true;
+
+  isInsertMode: boolean = false;
 
   readonly IMAGE_BASE_URL = `${EnvironmentCls.photoUrl}/uploads/`;
 
@@ -38,7 +45,16 @@ export class TestComponent {
 
   onEdit(e: any) {
     console.log('onEdit executed!', e.data);
+
+    this.isInsertMode = false;
+
     this.resetUploader();
+
+    this.profileImageError = false;
+    this.profileImageErrorMessage = '';
+    this.currentEditKey = e.key;
+
+    // console.log("Curreneditkey: ", this.currentEditKey);
 
     if (e.data?.imageUrl) {
       this.imagePreviewUrl =
@@ -47,15 +63,16 @@ export class TestComponent {
       this.imagePreviewUrl = null;
     }
 
-    this.profileImageFile = null; // reset file input
+    this.profileImageFile = null;
   }
 
   resetUploader() {
+
     this.showUploader = false;
     this.profileImageFile = null;
     this.imagePreviewUrl = null;
 
-    // let Angular destroy component
+
     setTimeout(() => {
       this.showUploader = true;
     });
@@ -63,39 +80,43 @@ export class TestComponent {
 
   initNewRow(e: any) {
     console.log("initNewRow executed!");
+
+    this.isInsertMode = true;
+
     this.resetUploader();
 
     e.data = {
       id: 0,
       firstName: 'shambhu',
-      middleName: 'dfdd',
-      lastName: 'gulmire',
-      email: 'djdj@gmail.com',
+      middleName: 'A',
+      lastName: 'Gulmire',
+      email: 'email@gmail.com',
       gender: 'Male',
       dateOfBirth: null,
-      address: 'dmdvdkfj',
-      country: 'india',
-      state: 'maharashtra',
+      address: 'Somewhere in Sangola',
+      country: 'India',
+      state: 'Maharashtra',
       pincode: '413307',
-      password: 'kdjvdvd',
+      password: 'Sham1212',
       imageUrl: ''
     };
   }
 
   onRowValidating(e: any) {
     console.log("onRowValidating executed!");
-    // Only validate image on INSERT
 
-    if (!this.profileImageFile) {
+    console.log("IsInsertMode: ",);
+
+    if (this.isInsertMode && !this.profileImageFile) {
+
       e.isValid = false;
 
-      // e.errorText = 'Profile image is required';
+      console.log("ProfileImageFile: ", this.profileImageFile)
 
       this.profileImageError = true;
       this.profileImageErrorMessage = 'Profile image is required';
     }
   }
-
 
   insertRow(e: any) {
     const fd = new FormData();
@@ -109,7 +130,9 @@ export class TestComponent {
     // }
 
     Object.keys(e.data).forEach(key => {
+
       if (e.data[key] !== null && e.data[key] !== undefined) {
+
         fd.append(key, e.data[key]);
       }
     });
@@ -120,16 +143,25 @@ export class TestComponent {
 
     console.log('INSERT payload ready', e.data);
     console.log('With image file:', this.profileImageFile);
-    // call API here
+
 
     this.addUser(fd);
   }
 
   addUser(data: any) {
-    this.stud.addStudent(data).subscribe((res) => {
-      console.log("Student added successfully!", res);
-      this.getStudents();
+
+    this.stud.addStudent(data).subscribe({
+
+      next: (res: any) => {
+        console.log('Student added successfully!', res);
+        this.getStudents();
+      },
+
+      error: (err: any) => {
+        console.error('Error occurred while adding student!', err);
+      }
     });
+
   }
 
   updateRow(e: any) {
@@ -139,7 +171,9 @@ export class TestComponent {
     };
 
     const fd = new FormData();
+
     Object.keys(updatedData).forEach(key => {
+
       fd.append(key, updatedData[key]);
     });
 
@@ -151,41 +185,49 @@ export class TestComponent {
     console.log('UPDATE payload ready', updatedData);
 
     this.updateUser(fd);
-    // call API here
   }
 
   removeRow(e: any) {
+
     console.log("removeRow executed!");
     console.log("Deleted data: ", e.data);
+
+    e.cancel = true;
+
+    this.deleteUser(e.data.id);
   }
 
   onImageSelected(e: any) {
     const file = e.value?.[0];
+    // this.showUploader = true;
+    console.log("showUploader: ", this.showUploader);
 
-    if (!file) {
-      this.profileImageError = true;
-      this.profileImageErrorMessage = 'Profile image is required';
-      return;
-    }
-
-    if (!file.type.startsWith('image/')) {
-      this.profileImageError = true;
-      this.profileImageErrorMessage = 'Only image files are allowed';
-      return;
-    }
-
-    if (file.size > 2 * 1024 * 1024) {
-      this.profileImageError = true;
-      this.profileImageErrorMessage = 'Image size must be less than 2MB';
-      return;
-    }
+    const rowIdx = this.dataGrid.instance.getRowIndexByKey(this.currentEditKey);
+    console.log('Row index:', rowIdx);
 
     this.profileImageFile = file;
     this.profileImageError = false;
     this.profileImageErrorMessage = '';
 
-    // 🔥 Image preview
+    console.log("CurrentImageName: ", this.dataGrid.instance.cellValue(rowIdx, 'imageUrl'));
+
+    // this.dataGrid.instance.cellValue(
+    //   this.currentEditKey,
+    //   'imageUrl',
+    //   `updated_${Date.now()}`
+    // );
+    const newImageValue = `updated_${Date.now()}`;
+    this.dataGrid.instance.cellValue(
+      rowIdx,
+      'imageUrl',
+      newImageValue
+    );
+
+    // console.log("currentEditKey: ", this.currentEditKey);
+    console.log("updatedImageName: ", this.dataGrid.instance.cellValue(rowIdx, 'imageUrl'));
+
     const reader = new FileReader();
+
     reader.onload = () => {
       this.imagePreviewUrl = reader.result as string;
     };
@@ -229,11 +271,11 @@ export class TestComponent {
         timerProgressBar: true
       });
       this.getStudents();
-      this.router.navigate(["/students"]);
+      // this.router.navigate(["/students"]);
     });
   }
 
-  deleteUser() {
+  deleteUser(id: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'This record will be permanently deleted!',
@@ -248,7 +290,7 @@ export class TestComponent {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        this.stud.deleteStudent(0).subscribe({
+        this.stud.deleteStudent(id).subscribe({
           next: (res) => {
             // console.log(res);
             if (!res.success) {
@@ -276,7 +318,7 @@ export class TestComponent {
             });
 
             this.getStudents();
-            this.router.navigate(['/students']);
+            // this.router.navigate(['/students']);
           }
         });
       }

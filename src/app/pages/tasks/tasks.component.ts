@@ -127,6 +127,7 @@ export class TasksComponent implements OnInit {
         timerProgressBar: true
       });
       this.isPopupVisible = false;
+      this.selectedImage = null;
       this.getStudents();
       this.router.navigate(["/students"]);
     });

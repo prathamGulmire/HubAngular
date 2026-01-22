@@ -150,7 +150,7 @@ export class TestComponent {
 
     if (this.isInsertMode && !this.profileImageFile) {
 
-      // e.isValid = false;
+      e.isValid = false;
 
       console.log("ProfileImageFile: ", this.profileImageFile)
 

@@ -31,7 +31,13 @@
     [allowAdding]="true"
     [confirmDelete]="false"
     >
-      <dxo-form>
+      <dxo-form
+        [colCountByScreen]="{
+            xs: 1,
+            sm: 2,
+            md: 2,
+            lg: 3
+        }">
 
         <dxi-item 
           dataField="firstName" 
@@ -62,6 +68,7 @@
         </dxi-item>
 
         <dxi-item
+          class="img-container"
           itemType="simple"
           [label]="{ text: 'Profile Image' }">
 
@@ -81,7 +88,7 @@
 
           <dx-button
             *ngIf="!showUploader && imagePreviewUrl != null"
-            text="Remove Image"
+            icon="trash"
             type="danger"
             stylingMode="outlined"
             (onClick)="removeImage()">
@@ -186,39 +193,39 @@
 
   <dxi-data-grid-column
     dataField="firstName"
-    caption="firstName"
+    caption="First Name"
     [hidingPriority]="8">
   </dxi-data-grid-column>
 
   <dxi-data-grid-column
     dataField="lastName"
-    caption="lastName"
+    caption="Last Name"
     [hidingPriority]="6">
   </dxi-data-grid-column>
   
   <dxi-data-grid-column
     dataField="email"
-    caption="email"
+    caption="Email"
     [hidingPriority]="5">
   </dxi-data-grid-column>
 
   <dxi-data-grid-column
     dataField="gender"
-    caption="gender"
+    caption="Gender"
     [allowSorting]="false"
     [hidingPriority]="7">
   </dxi-data-grid-column>
   
   <dxi-data-grid-column
     dataField="address"
-    caption="address"
-    [hidingPriority]="4">
+    caption="Address"
+    [hidingPriority]="2">
   </dxi-data-grid-column>
 
   <dxi-data-grid-column
     dataField="country"
-    caption="country"
-    [hidingPriority]="1">
+    caption="Country"
+    [hidingPriority]="3">
   </dxi-data-grid-column>
 
   <dxi-data-grid-column dataField="middleName" [visible]="false"></dxi-data-grid-column>
@@ -230,8 +237,8 @@
 
   <dxi-data-grid-column
     dataField="createdAt"
-    caption="createdAt"
-    [hidingPriority]="3">
+    caption="Created At"
+    [hidingPriority]="1">
   </dxi-data-grid-column>
 
   <dxo-data-grid-search-panel [visible]="true"></dxo-data-grid-search-panel>

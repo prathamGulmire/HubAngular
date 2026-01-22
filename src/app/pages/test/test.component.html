@@ -1,6 +1,7 @@
 <h2>Student/User List</h2>
 
 <dx-data-grid
+  #datagrid
   class="dx-card content-block"
   [dataSource]="dataSource"
   [keyExpr]="'id'"
@@ -15,7 +16,9 @@
   (onRowUpdating)="updateRow($event)"
   (onEditingStart)="onEdit($event)"
   (onInitNewRow)="initNewRow($event)"
-  (onRowValidating)="onRowValidating($event)">
+  (onRowValidating)="onRowValidating($event)"
+  (onEditCanceling)="onEditCanceling($event)"
+  (onSaving)="onSaving($event)">
 
   <dxo-data-grid-paging [pageSize]="10"></dxo-data-grid-paging>
   <dxo-data-grid-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-data-grid-pager>
@@ -62,7 +65,7 @@
           itemType="simple"
           [label]="{ text: 'Profile Image' }">
 
-          <ng-container *ngIf="showUploader">
+          <ng-container *ngIf="showUploader && imagePreviewUrl == null">
             <dx-file-uploader
               accept="image/*"
               [multiple]="false"
@@ -75,6 +78,14 @@
             *ngIf="imagePreviewUrl"
             [src]="imagePreviewUrl"
             class="profile-img"/>
+
+          <dx-button
+            *ngIf="!showUploader && imagePreviewUrl != null"
+            text="Remove Image"
+            type="danger"
+            stylingMode="outlined"
+            (onClick)="removeImage()">
+          </dx-button>
 
           <div class="dx-invalid-message" *ngIf="profileImageError">
             {{ profileImageErrorMessage }}

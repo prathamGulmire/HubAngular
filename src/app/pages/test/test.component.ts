@@ -5,17 +5,26 @@ import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxFileUploaderMo
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { EnvironmentCls } from '../../../environment';
+import notify from 'devextreme/ui/notify';
+import DevExpress from 'devextreme';
 
 @Component({
   selector: 'app-test',
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss',
   standalone: true,
-  imports: [DxDataGridModule, DxFormModule, DxPopupModule, DxFileUploaderModule, DxButtonModule, CommonModule]
+  imports: [
+    DxDataGridModule,
+    DxFormModule,
+    DxPopupModule,
+    DxFileUploaderModule,
+    DxButtonModule,
+    CommonModule,
+  ]
 })
 export class TestComponent {
 
-  @ViewChild(DxDataGridComponent, { static: false })
+  @ViewChild('datagrid', { static: false })
   dataGrid!: DxDataGridComponent;
 
   currentEditKey: any = null;
@@ -23,7 +32,7 @@ export class TestComponent {
   dataSource: any;
   genders = ['Male', 'Female', 'Other'];
 
-  profileImageFile: File | null = null; 
+  profileImageFile: File | null = null;
   profileImageError = false;
   profileImageErrorMessage = '';
 
@@ -46,9 +55,14 @@ export class TestComponent {
   onEdit(e: any) {
     console.log('onEdit executed!', e.data);
 
-    this.isInsertMode = false;
+    // e.cancel = true;
 
-    this.resetUploader();
+    this.isInsertMode = false;
+    // this.showUploader = false;
+    // this.imagePreviewUrl = null;
+    this.onEditCanceling(e);
+
+    // this.resetUploader();
 
     this.profileImageError = false;
     this.profileImageErrorMessage = '';
@@ -63,6 +77,14 @@ export class TestComponent {
       this.imagePreviewUrl = null;
     }
 
+    this.profileImageFile = null;
+    // this.showUploader = false;
+  }
+
+  onEditCanceling(e: any) {
+    console.log("OnEditCanceling executed!");
+    this.imagePreviewUrl = null;
+    this.showUploader = false;
     this.profileImageFile = null;
   }
 
@@ -84,6 +106,7 @@ export class TestComponent {
     this.isInsertMode = true;
 
     this.resetUploader();
+    // this.showUploader = true;
 
     e.data = {
       id: 0,
@@ -102,14 +125,32 @@ export class TestComponent {
     };
   }
 
+  onSaving(e: any) {
+
+    console.log("OnSaving clicked");
+
+    if (e.changes?.length === 0) {
+      
+      e.cancel = true;
+
+      notify(
+        'No changes detected to save',
+        'warning',
+        2000
+      );
+
+    }
+  }
+
+
   onRowValidating(e: any) {
     console.log("onRowValidating executed!");
 
-    console.log("IsInsertMode: ",);
+    console.log("IsInsertMode: ", this.isInsertMode);
 
     if (this.isInsertMode && !this.profileImageFile) {
 
-      e.isValid = false;
+      // e.isValid = false;
 
       console.log("ProfileImageFile: ", this.profileImageFile)
 
@@ -161,10 +202,12 @@ export class TestComponent {
         console.error('Error occurred while adding student!', err);
       }
     });
-
   }
 
   updateRow(e: any) {
+
+    // e.cancel = true;
+
     const updatedData = {
       ...e.oldData,
       ...e.newData
@@ -182,9 +225,12 @@ export class TestComponent {
     }
 
     this.profileImageFile = null;
-    console.log('UPDATE payload ready', updatedData);
+    // console.log('UPDATE payload ready', updatedData);
 
     this.updateUser(fd);
+
+    this.showUploader = false;
+    this.imagePreviewUrl = null;
   }
 
   removeRow(e: any) {
@@ -198,6 +244,13 @@ export class TestComponent {
   }
 
   onImageSelected(e: any) {
+
+    this.showUploader = true;
+
+    setTimeout(() => {
+      this.showUploader = false;
+    });
+
     const file = e.value?.[0];
     // this.showUploader = true;
     console.log("showUploader: ", this.showUploader);
@@ -206,6 +259,7 @@ export class TestComponent {
     console.log('Row index:', rowIdx);
 
     this.profileImageFile = file;
+    console.log("image: ", this.profileImageFile);
     this.profileImageError = false;
     this.profileImageErrorMessage = '';
 
@@ -230,8 +284,24 @@ export class TestComponent {
 
     reader.onload = () => {
       this.imagePreviewUrl = reader.result as string;
+      console.log("ImagePreviewUrl: ", this.imagePreviewUrl);
     };
     reader.readAsDataURL(file);
+  }
+
+  removeImage() {
+
+    this.profileImageFile = null;
+    this.imagePreviewUrl = null;
+    this.profileImageError = false;
+
+    this.showUploader = false;
+    console.log("ShowUploader: ", this.showUploader);
+
+    setTimeout(() => {
+      this.showUploader = true;
+      console.log("ShowUploader: ", this.showUploader);
+    });
   }
 
   getStudents() {

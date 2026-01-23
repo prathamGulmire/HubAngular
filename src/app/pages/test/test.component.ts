@@ -7,6 +7,12 @@ import { CommonModule } from '@angular/common';
 import { EnvironmentCls } from '../../../environment';
 import notify from 'devextreme/ui/notify';
 import DevExpress from 'devextreme';
+import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
+import { jsPDF } from 'jspdf';
+import { exportDataGrid as exportPdf } from 'devextreme/common/export/pdf';
+import { exportDataGrid as exportExcel } from 'devextreme/common/export/excel';
+import ExcelJs from 'exceljs';
+import saveAs from 'file-saver';
 
 @Component({
   selector: 'app-test',
@@ -130,7 +136,7 @@ export class TestComponent {
     console.log("OnSaving clicked");
 
     if (e.changes?.length === 0) {
-      
+
       e.cancel = true;
 
       notify(
@@ -393,6 +399,57 @@ export class TestComponent {
         });
       }
     });
+  }
+
+  onExporting(e: DxDataGridTypes.ExportingEvent) {
+
+    if (e.format === 'pdf') {
+
+      console.log("pdfffffff");
+
+      const doc = new jsPDF();
+
+      exportPdf({
+        jsPDFDocument: doc,
+        component: e.component,
+        indent: 5,
+
+        columnWidths: [
+          15,
+          30,
+          30,
+          55,
+          18,
+          25,
+        ],
+      }).then(() => {
+        doc.save("StudentList.pdf");
+      });
+
+      e.cancel = true;
+    }
+    else {
+
+      console.log("excelllllll");
+
+      const workbook = new ExcelJs.Workbook();
+      const worksheet = workbook.addWorksheet('Students');
+
+      exportExcel({
+        component: e.component,
+        worksheet,
+        autoFilterEnabled: true,
+      } as any).then(() => {
+        workbook.xlsx.writeBuffer().then((buffer) => {
+          saveAs(
+            new Blob([buffer], { type: 'application/octet-stream' }),
+            'StudentList.xlsx'
+          );
+        });
+      });
+
+      e.cancel = true;
+    }
   }
 
   onCancel() {

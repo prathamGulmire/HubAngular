@@ -18,11 +18,20 @@
   (onInitNewRow)="initNewRow($event)"
   (onRowValidating)="onRowValidating($event)"
   (onEditCanceling)="onEditCanceling($event)"
-  (onSaving)="onSaving($event)">
+  (onSaving)="onSaving($event)"
+  (onExporting)="onExporting($event)">
 
   <dxo-data-grid-paging [pageSize]="10"></dxo-data-grid-paging>
   <dxo-data-grid-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-data-grid-pager>
   <dxo-data-grid-filter-row [visible]="true"></dxo-data-grid-filter-row>
+
+  <dxo-data-grid-selection mode="multiple"></dxo-data-grid-selection>
+
+  <dxo-data-grid-export
+    [enabled]="true"
+    [formats]="['pdf','excel']"
+    [allowExportSelectedData]="true"
+  ></dxo-data-grid-export>
 
   <dxo-data-grid-editing 
     mode="form"
@@ -219,6 +228,7 @@
   <dxi-data-grid-column
     dataField="address"
     caption="Address"
+    [allowExporting]="false"
     [hidingPriority]="2">
   </dxi-data-grid-column>
 
@@ -238,6 +248,7 @@
   <dxi-data-grid-column
     dataField="createdAt"
     caption="Created At"
+    [allowExporting]="false"
     [hidingPriority]="1">
   </dxi-data-grid-column>
 

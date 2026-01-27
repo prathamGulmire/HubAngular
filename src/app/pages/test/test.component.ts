@@ -13,6 +13,7 @@ import { exportDataGrid as exportPdf } from 'devextreme/common/export/pdf';
 import { exportDataGrid as exportExcel } from 'devextreme/common/export/excel';
 import ExcelJs from 'exceljs';
 import saveAs from 'file-saver';
+import { DepartmentService } from '../../shared/services/department.service';
 
 @Component({
   selector: 'app-test',
@@ -48,14 +49,28 @@ export class TestComponent {
 
   isInsertMode: boolean = false;
 
+  departments: any[] = [];
+
   readonly IMAGE_BASE_URL = `${EnvironmentCls.photoUrl}/uploads/`;
 
-  constructor(private stud: StudentService, private router: Router) {
-
-  }
+  constructor(
+    private stud: StudentService,
+    private router: Router,
+    private depart: DepartmentService
+  ) { }
 
   ngOnInit(): void {
     this.getStudents();
+    this.loadDepartment();
+  }
+
+  loadDepartment() {
+    this.depart.getDepartment(0).subscribe((res: any) => {
+      if(res.isSuccess) {
+        this.departments = res.data;
+        console.log("Departments: ", res.data);
+      }
+    });
   }
 
   onEdit(e: any) {
@@ -120,8 +135,9 @@ export class TestComponent {
       middleName: 'A',
       lastName: 'Gulmire',
       email: 'email@gmail.com',
-      gender: 'Male',
+      gender: null,
       dateOfBirth: null,
+      departmentId: null,
       address: 'Somewhere in Sangola',
       country: 'India',
       state: 'Maharashtra',
@@ -129,6 +145,12 @@ export class TestComponent {
       password: 'Sham1212',
       imageUrl: ''
     };
+  }
+
+  showDepartmentName(did: any) {
+    // const did = e.data.departmentId;
+    const department = this.departments.filter(d => d.departmentId == did);
+    return department[0].departmentName;
   }
 
   onSaving(e: any) {
@@ -175,6 +197,8 @@ export class TestComponent {
     //   e.cancel = true;
     //   return;
     // }
+
+    console.log("E.data: ", e.data);
 
     Object.keys(e.data).forEach(key => {
 
@@ -313,6 +337,7 @@ export class TestComponent {
   getStudents() {
     this.stud.getStudent(0).subscribe((res) => {
       this.dataSource = res;
+      console.log("Datasource: ", this.dataSource);
     });
   }
 
@@ -412,7 +437,7 @@ export class TestComponent {
       exportPdf({
         jsPDFDocument: doc,
         component: e.component,
-        indent: 5,
+        indent: 2,
 
         columnWidths: [
           15,
@@ -420,7 +445,7 @@ export class TestComponent {
           30,
           55,
           18,
-          25,
+          33,
         ],
       }).then(() => {
         doc.save("StudentList.pdf");

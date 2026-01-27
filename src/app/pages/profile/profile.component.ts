@@ -4,12 +4,14 @@ import { AuthService } from '../../shared/services';
 import { StudentService } from '../../shared/services/student.service';
 import { CommonModule } from '@angular/common';
 import { EnvironmentCls } from '../../../environment';
+import { DepartmentService } from '../../shared/services/department.service';
+import { DxTextBoxModule } from 'devextreme-angular';
 
 @Component({
   templateUrl: 'profile.component.html',
   styleUrls: ['./profile.component.scss'],
   standalone: true,
-  imports: [DxFormModule, CommonModule],
+  imports: [DxFormModule, CommonModule, DxTextBoxModule],
 })
 
 export class ProfileComponent implements OnInit {
@@ -21,8 +23,13 @@ export class ProfileComponent implements OnInit {
   // imageBaseUrl = 'http://172.20.10.3:5000/uploads/';    // mobile hotspot
   // imageBaseUrl = 'http://192.168.31.9:5000/uploads/';
 
-  constructor(private auth: AuthService, private studentService: StudentService) {
+  departmentName: string = "";
 
+  constructor(
+    private auth: AuthService,
+    private studentService: StudentService,
+    private depart: DepartmentService
+  ) {
     this.colCountByScreen = {
       xs: 1,
       sm: 2,
@@ -39,18 +46,30 @@ export class ProfileComponent implements OnInit {
         this.student = response[0];
         console.log(this.student);
 
-        if(this.student.isActive == true) {
+        if (this.student.isActive == true) {
           this.student.isActive = "Yes";
         } else {
           this.student.isActive = "No";
         }
 
         this.student.dateOfBirth = this.student.dateOfBirth.substring(0, 10);
-        this.student.updatedAt =  this.student.updatedAt.substring(0, 10) + ' ' + this.student.updatedAt.substring(11, 16);
+        this.student.updatedAt = this.student.updatedAt.substring(0, 10) + ' ' + this.student.updatedAt.substring(11, 16);
 
-        if(this.student.role == 'user') {
+        if (this.student.role == 'user') {
           this.student.role = 'student';
         }
+
+        // const payload = {
+        //   id: this.student.departmentId
+        // };
+
+        this.depart.getDepartmentNameByStudentId(this.student.id).subscribe((res: any) => {
+          
+          if(res.isSuccess) {
+            const data = res.data;
+            this.departmentName = data[0].departmentName;
+          }
+        });
       });
     }
   }
@@ -60,4 +79,8 @@ export class ProfileComponent implements OnInit {
       ? this.imageBaseUrl + this.student.imageUrl
       : '';
   }
+
+  // get departName() {
+  //   return "";
+  // }
 }

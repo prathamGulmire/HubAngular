@@ -120,6 +120,21 @@
         </dxi-item>
 
         <dxi-item
+          dataField="departmentId"
+          editorType="dxSelectBox"
+          [editorOptions]="{
+            dataSource: departments,
+            displayExpr: 'departmentName',
+            valueExpr: 'departmentId',
+            placeholder: 'Select Department'
+          }">
+          <dxi-validation-rule
+            type="required"
+            message="Department is required">
+          </dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item
           dataField="gender"
           editorType="dxSelectBox"
           [editorOptions]="{
@@ -209,7 +224,7 @@
   <dxi-data-grid-column
     dataField="lastName"
     caption="Last Name"
-    [hidingPriority]="6">
+    [hidingPriority]="5">
   </dxi-data-grid-column>
   
   <dxi-data-grid-column
@@ -222,19 +237,21 @@
     dataField="gender"
     caption="Gender"
     [allowSorting]="false"
-    [hidingPriority]="7">
+    [hidingPriority]="4">
   </dxi-data-grid-column>
   
   <dxi-data-grid-column
     dataField="address"
     caption="Address"
     [allowExporting]="false"
-    [hidingPriority]="2">
+    [hidingPriority]="2"
+    [visible]="false">
   </dxi-data-grid-column>
 
   <dxi-data-grid-column
     dataField="country"
     caption="Country"
+    [allowExporting]="false"
     [hidingPriority]="3">
   </dxi-data-grid-column>
 
@@ -244,6 +261,18 @@
   <dxi-data-grid-column dataField="password" [visible]="false"></dxi-data-grid-column>
   <dxi-data-grid-column dataField="dateOfBirth" [visible]="false"></dxi-data-grid-column>
   <dxi-data-grid-column dataField="imageUrl" [visible]="false"></dxi-data-grid-column>
+
+  <dxi-data-grid-column 
+    dataField="departmentId"
+    caption="Department"
+    [visible]="true"
+    [hidingPriority]="7">
+    <dxo-lookup
+      [dataSource]="departments"
+      valueExpr="departmentId"
+      displayExpr="departmentName">
+    </dxo-lookup>
+  </dxi-data-grid-column>
 
   <dxi-data-grid-column
     dataField="createdAt"

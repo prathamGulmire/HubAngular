@@ -9,6 +9,7 @@ import { AssignCourseComponent } from './pages/student-course/assign-course/assi
 import { UnassignCourseComponent } from './pages/student-course/unassign-course/unassign-course.component';
 import { MyCoursesComponent } from './pages/course-pages/my-courses/my-courses.component';
 import { CourseEnrollComponent } from './pages/course-pages/course-enroll/course-enroll.component';
+import { DepartmentListComponent } from './pages/department/department-list/department-list.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,8 @@ import { CourseEnrollComponent } from './pages/course-pages/course-enroll/course
     // UnassignCourseComponent,
     // MyCoursesComponent,
     // CourseEnrollComponent
+  
+    DepartmentListComponent
   ],
   imports: [
     BrowserModule,

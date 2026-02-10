@@ -11,6 +11,7 @@ import { UnassignCourseComponent } from './pages/student-course/unassign-course/
 import { MyCoursesComponent } from './pages/course-pages/my-courses/my-courses.component';
 import { CourseEnrollComponent } from './pages/course-pages/course-enroll/course-enroll.component';
 import { TestComponent } from './pages/test/test.component';
+import { DepartmentListComponent } from './pages/department/department-list/department-list/department-list.component';
 
 export const routes: Routes = [
   {
@@ -101,6 +102,12 @@ export const routes: Routes = [
   {
     path: 'test',
     component: TestComponent,
+    canActivate: [AuthGuardService],
+    data: { roles: ['admin'] }
+  },
+  {
+    path: 'departments',
+    component: DepartmentListComponent,
     canActivate: [AuthGuardService],
     data: { roles: ['admin'] }
   },

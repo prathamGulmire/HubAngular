@@ -49,6 +49,8 @@ export class TestComponent {
 
   isInsertMode: boolean = false;
 
+  isOnEditClicked: boolean = false;
+
   departments: any[] = [];
 
   readonly IMAGE_BASE_URL = `${EnvironmentCls.photoUrl}/uploads/`;
@@ -66,7 +68,7 @@ export class TestComponent {
 
   loadDepartment() {
     this.depart.getDepartment(0).subscribe((res: any) => {
-      if(res.isSuccess) {
+      if (res.isSuccess) {
         this.departments = res.data;
         console.log("Departments: ", res.data);
       }
@@ -76,20 +78,26 @@ export class TestComponent {
   onEdit(e: any) {
     console.log('onEdit executed!', e.data);
 
-    // e.cancel = true;
+    if (this.isOnEditClicked) {
+      e.cancel = true;
+      alert("Complete or terminate previous process!");
+      return;
+    }
+
+    this.imagePreviewUrl = null;
+    this.showUploader = false;
+    this.profileImageFile = null;
+
+    console.log("isOnEditclicked", this.isOnEditClicked);
 
     this.isInsertMode = false;
-    // this.showUploader = false;
-    // this.imagePreviewUrl = null;
-    this.onEditCanceling(e);
+    this.isOnEditClicked = true;
 
-    // this.resetUploader();
+    console.log("showuploader", this.showUploader);
 
     this.profileImageError = false;
     this.profileImageErrorMessage = '';
     this.currentEditKey = e.key;
-
-    // console.log("Curreneditkey: ", this.currentEditKey);
 
     if (e.data?.imageUrl) {
       this.imagePreviewUrl =
@@ -98,8 +106,45 @@ export class TestComponent {
       this.imagePreviewUrl = null;
     }
 
+    console.log("imagepreviewurl", this.imagePreviewUrl);
+
     this.profileImageFile = null;
-    // this.showUploader = false;
+  }
+
+  updateRow(e: any) {
+
+    const updatedData = {
+      ...e.oldData,
+      ...e.newData
+    };
+
+    const fd = new FormData();
+
+    Object.keys(updatedData).forEach(key => {
+
+      fd.append(key, updatedData[key]);
+    });
+
+    if (this.profileImageFile) {
+      fd.append('imageFile', this.profileImageFile);
+    }
+
+    this.profileImageFile = null;
+
+    this.updateUser(fd);
+
+    this.showUploader = false;
+    this.imagePreviewUrl = null;
+    this.isOnEditClicked = false;
+  }
+
+  onEditingFinished(e: any) {
+    console.log("Edit lifecycle finished");
+    this.isOnEditClicked = false;
+
+    this.imagePreviewUrl = null;
+    this.showUploader = false;
+    this.profileImageFile = null;
   }
 
   onEditCanceling(e: any) {
@@ -107,6 +152,7 @@ export class TestComponent {
     this.imagePreviewUrl = null;
     this.showUploader = false;
     this.profileImageFile = null;
+    this.isOnEditClicked = false;
   }
 
   resetUploader() {
@@ -114,7 +160,6 @@ export class TestComponent {
     this.showUploader = false;
     this.profileImageFile = null;
     this.imagePreviewUrl = null;
-
 
     setTimeout(() => {
       this.showUploader = true;
@@ -125,6 +170,7 @@ export class TestComponent {
     console.log("initNewRow executed!");
 
     this.isInsertMode = true;
+    this.isOnEditClicked = false;
 
     this.resetUploader();
     // this.showUploader = true;
@@ -169,7 +215,6 @@ export class TestComponent {
 
     }
   }
-
 
   onRowValidating(e: any) {
     console.log("onRowValidating executed!");
@@ -232,35 +277,6 @@ export class TestComponent {
         console.error('Error occurred while adding student!', err);
       }
     });
-  }
-
-  updateRow(e: any) {
-
-    // e.cancel = true;
-
-    const updatedData = {
-      ...e.oldData,
-      ...e.newData
-    };
-
-    const fd = new FormData();
-
-    Object.keys(updatedData).forEach(key => {
-
-      fd.append(key, updatedData[key]);
-    });
-
-    if (this.profileImageFile) {
-      fd.append('imageFile', this.profileImageFile);
-    }
-
-    this.profileImageFile = null;
-    // console.log('UPDATE payload ready', updatedData);
-
-    this.updateUser(fd);
-
-    this.showUploader = false;
-    this.imagePreviewUrl = null;
   }
 
   removeRow(e: any) {
@@ -468,7 +484,7 @@ export class TestComponent {
         workbook.xlsx.writeBuffer().then((buffer) => {
           saveAs(
             new Blob([buffer], { type: 'application/octet-stream' }),
-            'StudentList.xlsx'
+            'Student-list.xlsx'
           );
         });
       });

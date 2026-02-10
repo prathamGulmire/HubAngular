@@ -12,23 +12,29 @@ export class DepartmentService {
   constructor(private http: HttpClient) { }
 
   getDepartment(id: any) {
-    return this.http.get(this.baseUrl + '/GetDepartment/' + id);
+    return this.http.get<IDepartment>(this.baseUrl + '/GetDepartment/' + id);
   }
 
   addDepartment(payload: any) {
-    return this.http.post(this.baseUrl + '/AddDepartment', payload);
+    return this.http.post<IDepartment>(this.baseUrl + '/AddDepartment', payload);
   }
 
   updateDepartment(payload: any) {
-    return this.http.put(this.baseUrl + '/UpdateDepartment', payload);
+    return this.http.put<IDepartment>(this.baseUrl + '/UpdateDepartment', payload);
   }
 
   deleteDepartment(id: any) {
     // this.http.delete(this.baseUrl + '/DeleteDepartment/' + id);
-    return this.http.delete(`${this.baseUrl}/DeleteDepartment/${id}`);
+    return this.http.delete<IDepartment>(`${this.baseUrl}/DeleteDepartment/${id}`);
   }
 
   getDepartmentNameByStudentId(studentId: any) {
-    return this.http.get(this.baseUrl + '/GetDepartmentName?studentId=' + studentId);
+    return this.http.get<IDepartment>(this.baseUrl + '/GetDepartmentName?studentId=' + studentId);
   }
+}
+
+export interface IDepartment {
+  data: any,
+  isSuccess: boolean,
+  message: string
 }

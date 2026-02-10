@@ -19,6 +19,8 @@
   (onRowValidating)="onRowValidating($event)"
   (onEditCanceling)="onEditCanceling($event)"
   (onSaving)="onSaving($event)"
+  (onSaved)="onEditingFinished($event)"
+  (onEditCanceled)="onEditingFinished($event)"
   (onExporting)="onExporting($event)">
 
   <dxo-data-grid-paging [pageSize]="10"></dxo-data-grid-paging>
@@ -81,7 +83,7 @@
           itemType="simple"
           [label]="{ text: 'Profile Image' }">
 
-          <ng-container *ngIf="showUploader && imagePreviewUrl == null">
+          <ng-container *ngIf="showUploader && !imagePreviewUrl">
             <dx-file-uploader
               accept="image/*"
               [multiple]="false"

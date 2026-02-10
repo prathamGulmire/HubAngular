@@ -82,5 +82,16 @@ export const navigation: NavigationItem[] = [
         path: '/test'
       }
     ]
+  },
+  {
+    text: 'Department',
+    icon: 'folder',
+    roles: ['admin'],
+    items: [
+      {
+        text: 'Department-list',
+        path: '/departments'
+      }
+    ]
   }
 ];

@@ -15,10 +15,63 @@
     [colCountByScreen]="colCountByScreen"
     [readOnly]="true">
 
+    <dxi-item 
+      dataField="firstName">
+    </dxi-item>
+
     <dxi-item
-      dataField="departmentId"
-      caption="Department">
+      dataField="lastName">
+    </dxi-item>
+
+    <dxi-item
+      dataField="middleName">
+    </dxi-item>
+
+    <dxi-item
+      dataField="DepartmentName">
       <dx-text-box [value]="departmentName" [readOnly]="true"></dx-text-box>
+    </dxi-item>
+
+    <dxi-item
+      dataField="dateOfBirth"
+      editorType="dxDateBox"
+      [editorOptions]="{
+        type: 'date',
+        displayFormat: 'dd/MM/yyyy',
+        dateSerializationFormat: 'yyyy-MM-dd'
+      }">
+    </dxi-item>
+
+    <dxi-item
+      dataField="email">
+    </dxi-item>
+
+    <dxi-item
+      dataField="gender">
+    </dxi-item>
+
+    <dxi-item 
+      dataField="address">
+    </dxi-item>
+
+    <dxi-item 
+      dataField="state">
+    </dxi-item>
+
+    <dxi-item
+      dataField="country">
+    </dxi-item>
+
+    <dxi-item
+      dataField="pincode">
+    </dxi-item>
+
+    <dxi-item 
+      dataField="role">
+    </dxi-item>
+
+    <dxi-item 
+      dataField="isActive">
     </dxi-item>
 
   </dx-form>

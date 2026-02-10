@@ -1,0 +1,87 @@
+<h2>Department</h2>
+
+<dx-data-grid
+    class="dx-card content-block"
+    [dataSource]="departments"
+    [keyExpr]="'departmentId'"
+    [focusedRowEnabled]="true"
+    [focusedRowIndex]="0"
+    [columnAutoWidth]="true"
+    [columnHidingEnabled]="true"
+    [allowColumnReordering]="true"
+    (onRowInserting)="insertRow($event)"
+    (onRowUpdating)="updateRow($event)"
+    (onEditingStart)="onEdit($event)"
+    (onInitNewRow)="initNewRow($event)"
+    (onRowRemoving)="removeRow($event)"
+    (onExporting)="onExport($event)">
+
+    <dxo-data-grid-paging [pageSize]="10"></dxo-data-grid-paging>
+    <dxo-data-grid-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-data-grid-pager>
+
+    <dxo-data-grid-filter-row [visible]="true"></dxo-data-grid-filter-row>
+
+    <dxo-data-grid-selection mode="multiple"></dxo-data-grid-selection>
+
+    <dxo-grouping [contextMenuEnabled]="false"></dxo-grouping>
+
+    <dxo-data-grid-export
+        [enabled]="true"
+        [formats]="['pdf', 'excel']"
+        [allowExportSelectedData]="true">
+    </dxo-data-grid-export>
+
+    <dxo-data-grid-editing
+        mode="form"
+        [allowUpdating]="true"
+        [allowDeleting]="true"
+        [allowAdding]="true"
+        [confirmDelete]="false">
+
+        <dxo-form
+            [colCountByScreen]="{
+                xs: 1,
+                sm: 2,
+                md: 2,
+                lg: 3
+            }">
+            
+            <dxi-item
+                [visible]="!isInsertMode"
+                dataField="departmentId"
+                [editorOptions]="{
+                    readOnly: true
+                }">
+            </dxi-item>
+
+            <dxi-item
+                dataField="departmentName">
+            </dxi-item>
+        </dxo-form>
+    </dxo-data-grid-editing>
+
+    <dxi-data-grid-column
+        dataField="departmentId"
+        [hidingPriority]="3"
+        [alignment]="'center'">
+    </dxi-data-grid-column>
+
+    <dxi-data-grid-column 
+        dataField="departmentName"
+        [hidingPriority]="4">
+    </dxi-data-grid-column>
+
+    <dxi-data-grid-column 
+        dataField="createdAt"
+        [hidingPriority]="1">
+    </dxi-data-grid-column>
+
+    <dxi-data-grid-column 
+        dataField="updatedAt"
+        [hidingPriority]="2">
+    </dxi-data-grid-column>
+
+    <dxo-data-grid-search-panel [visible]="true"></dxo-data-grid-search-panel>
+
+    <!-- <dxo-data-grid-group-panel [visible]="true"></dxo-data-grid-group-panel> -->
+</dx-data-grid>
